@@ -23,10 +23,10 @@
         "moonlandsoft/yii2-phpexcel": "dev-master",
         "yiisoft/yii2-bootstrap5": "2.0.x-dev",
         "tightenco/collect": "^8.83",
-        "vlucas/phpdotenv": "5.4.x-dev",
-        "yiisoft/yii2-debug": "~2.1.0"
+        "vlucas/phpdotenv": "5.4.x-dev"
     },
     "require-dev": {
+        "yiisoft/yii2-debug": "~2.1.0",
         "yiisoft/yii2-gii": "~2.2.0",
         "yiisoft/yii2-faker": "~2.0.0",
         "codeception/codeception": "^4.0",
