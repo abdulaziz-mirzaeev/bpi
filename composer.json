@@ -14,7 +14,7 @@
     },
     "minimum-stability": "dev",
     "require": {
-        "php": "7.4.0",
+        "php": ">=7.4.0",
         "yiisoft/yii2": "~2.0.14",
         "yiisoft/yii2-bootstrap4": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
@@ -23,10 +23,10 @@
         "moonlandsoft/yii2-phpexcel": "dev-master",
         "yiisoft/yii2-bootstrap5": "2.0.x-dev",
         "tightenco/collect": "^8.83",
-        "vlucas/phpdotenv": "5.4.x-dev"
+        "vlucas/phpdotenv": "5.4.x-dev",
+        "yiisoft/yii2-debug": "~2.1.0"
     },
     "require-dev": {
-        "yiisoft/yii2-debug": "~2.1.0",
         "yiisoft/yii2-gii": "~2.2.0",
         "yiisoft/yii2-faker": "~2.0.0",
         "codeception/codeception": "^4.0",
