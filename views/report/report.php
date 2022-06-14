@@ -19,9 +19,6 @@ use app\models\Record;
 use app\models\ReportForm;
 use yii\bootstrap5\ActiveForm;
 use yii\bootstrap5\Html;
-
-$actualYearLabel = $actualYear . ' ' . RecordType::ACTUAL;
-$planYearLabel = $planYear . ' ' . RecordType::PLAN;
 ?>
 
 <h2 class="text-center">Dybaco Construction</h2>
