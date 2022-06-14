@@ -20,6 +20,7 @@ if (file_exists(__DIR__ . '/.env')) {
 }
 
 $config = require __DIR__ . '/config/console.php';
+print_r($config);
 
 $application = new yii\console\Application($config);
 $exitCode = $application->run();
