@@ -44,7 +44,6 @@ if (isset($reportType)) {
     }
 }
 ?>
-
 <?php $this->registerJs(<<<JS
     $('tr.record').each(function () {
         let accountType = $(this).data('account-type');
@@ -61,33 +60,31 @@ if (isset($reportType)) {
         switch (accountId) {
             // NET SALES
             case 5: 
-                $(this).addClass(`border-bottom-0 border-right-0 border-left-0 border-2 border-info`);
-                $('td:first-child', this).addClass('text-info')
+                $(this).css({'borderTop': '2px solid var(--bs-info)'})
+                $('td:first-child', this).addClass('text-info font-weight-bold')
                 break;
             // Sales Commission
             case 6:
-                $(this).addClass(`border-bottom-0 border-right-0 border-left-0 border-2 border-warning`);
+                $(this).css({'borderTop': '2px solid var(--bs-warning)'})
                 break;
             // COGS
             case 15:
-                $(this).addClass(`border-top-0 border-right-0 border-left-0 border-2 border-warning`);
+                $(this).css({'borderBottom': '2px solid var(--bs-warning)'})
                 break;
             // GROSS PROFIT
             case 16:
-                $(this).addClass(`border-top-0 border-right-0 border-left-0 border-2`);
-                $(this).css({borderColor: 'var(--bs-orange)'});
-                $('td:first-child', this).addClass('text-success')
-                break;
-            case 28:
-                $(this).addClass(`border-top-0 border-right-0 border-left-0 border-2`);
-                $(this).css({borderColor: 'var(--bs-orange)'});
-                break;
-            case 29:
-                $(this).addClass(`border-top-0 border-right-0 border-left-0 border-2 border-secondary`);
+                $(this).css({'borderBottom': '2px solid var(--bs-orange)'})
                 $('td:first-child', this).addClass('text-success font-weight-bold')
                 break;
+            case 28:
+                $(this).css({'borderBottom': '2px solid var(--bs-orange)'})
+                break;
+            case 29:
+                $(this).css({'borderBottom': '2px solid var(--bs-secondary)'})
+                $('td:first-child', this).addClass('text-success font-weight-bold');
+                break;
             case 37:
-                $(this).addClass(`border-bottom-0 border-right-0 border-left-0 border-2 border-secondary`);
+                $(this).css({'borderTop': '2px solid var(--bs-secondary)'})
                 $('td:first-child', this).addClass('text-dark font-weight-bold')
                 break;
         }
@@ -117,4 +114,5 @@ if (isset($reportType)) {
         }
     });
 JS
+
 ) ?>
