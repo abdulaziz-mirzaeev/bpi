@@ -35,7 +35,9 @@ $previousYearLabel = Yii::$app->formatter->asDate($previousDate, 'php:Y') . ' ' 
 
 <?php else: ?>
 
-<table class="table table-borderless">
+<h2 class="my-4 display-6">R8 Display</h2>
+
+<table class="table table-borderless table-hover">
     <thead class="text-center">
     <tr>
         <th scope="col" rowspan="2">Year-Over-Year</th>

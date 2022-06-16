@@ -6,6 +6,7 @@ $db = file_exists(__DIR__ . '/db-local.php') ? require __DIR__ . '/db-local.php'
 
 $config = [
     'id' => 'basic',
+    'name' => 'BPI Project',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [

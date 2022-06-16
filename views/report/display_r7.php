@@ -20,6 +20,8 @@ $actualYearLabel = $actualYear . ' ' . RecordType::ACTUAL;
 $planYearLabel = $planYear . ' ' . RecordType::PLAN;
 ?>
 
+<h2 class="my-4 display-6">R7 Display</h2>
+
 <?php if ($actual->count() == 0 || $planned->count() == 0): ?>
     <div class="card mt-4">
         <div class="card-body">
@@ -30,7 +32,7 @@ $planYearLabel = $planYear . ' ' . RecordType::PLAN;
     </div>
 <?php else: ?>
 
-<table class="table table-borderless">
+<table class="table table-borderless table-hover">
     <thead class="text-center">
         <tr>
             <th scope="col" rowspan="2">Actual To Plan</th>
