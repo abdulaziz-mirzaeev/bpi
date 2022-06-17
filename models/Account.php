@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\base\Model;
 
 /**
  * This is the model class for table "accounts".
@@ -13,8 +14,14 @@ use Yii;
  * @property int|null $visible
  * @property int|null $type
  */
-class Account extends \yii\db\ActiveRecord
+class Account extends Model
 {
+    public int $id;
+    public string $name;
+    public string $display_name;
+    public int $visible = 1;
+    public int $type;
+
     const VISIBLE_FALSE = 0;
     const VISIBLE_TRUE = 1;
 
@@ -26,17 +33,10 @@ class Account extends \yii\db\ActiveRecord
     const TYPE_INCOME = 1;
     const TYPE_EXPENSE = 0;
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function tableName()
-    {
-        return 'accounts';
-    }
 
-    /**
-     * {@inheritdoc}
-     */
+//    /**
+//     * {@inheritdoc}
+//     */
     public function rules()
     {
         return [
@@ -44,20 +44,20 @@ class Account extends \yii\db\ActiveRecord
             [['name', 'display_name'], 'string', 'max' => 255],
         ];
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function attributeLabels()
-    {
-        return [
-            'id' => 'ID',
-            'name' => 'Name',
-            'display_name' => 'Display Name',
-            'visible' => 'Visible',
-            'type' => 'Type',
-        ];
-    }
+//
+//    /**
+//     * {@inheritdoc}
+//     */
+//    public function attributeLabels()
+//    {
+//        return [
+//            'id' => 'ID',
+//            'name' => 'Name',
+//            'display_name' => 'Display Name',
+//            'visible' => 'Visible',
+//            'type' => 'Type',
+//        ];
+//    }
 
     public function getDisplayLabel()
     {

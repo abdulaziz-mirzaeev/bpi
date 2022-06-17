@@ -4,6 +4,7 @@
 namespace app\controllers;
 
 use app\enums\RecordType;
+use app\helpers\Data;
 use app\helpers\Tools;
 use app\models\Account;
 use app\models\Record;
@@ -50,6 +51,12 @@ class ReportController extends Controller
 
         $selectedReport = $reportForm['reportId'];
 
+
+        $accounts = collect(Data::getAccounts())
+            ->where('visible', Account::VISIBLE_TRUE)
+            ->sortBy('id')
+            ->all();
+
         if ($selectedReport == ReportForm::REPORT_R7) {
             $actual = collect(Record::find()
                 ->where('DATE_FORMAT(date, \'%Y-%m\') = :date', [':date' => $dateActual])
@@ -60,8 +67,6 @@ class ReportController extends Controller
                 ->where('DATE_FORMAT(date, \'%Y-%m\') = :date', [':date' => $datePlanned])
                 ->andWhere(['type' => RecordType::PLAN])
                 ->all());
-
-            $accounts = Account::find()->orderBy(['id' => SORT_ASC])->where(['visible' => Account::VISIBLE_TRUE])->all();
 
             return $this->render('report', [
                 'model' => $model,
@@ -86,8 +91,6 @@ class ReportController extends Controller
                 ->where('DATE_FORMAT(date, \'%Y-%m\') = :date', [':date' => $datePrevious])
                 ->andWhere(['type' => RecordType::ACTUAL])
                 ->all());
-
-            $accounts = Account::find()->orderBy(['id' => SORT_ASC])->where(['visible' => Account::VISIBLE_TRUE])->all();
 
             return $this->render('report', [
                 'model' => $model,

@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\helpers\Data;
 use app\helpers\Tools;
 use app\models\Account;
 use app\models\DatabaseUploadForm;
@@ -226,9 +227,7 @@ class SiteController extends Controller
     public function actionData()
     {
         $data = ArrayHelper::index(Record::find()->asArray()->all(), null, ['date', 'type']);
-        $accounts = Account::find()->all();
-
-//        Tools::pr($data);
+        $accounts = Data::getAccounts();
 
         return $this->render('data', ['data' => $data, 'accounts' => $accounts]);
 
