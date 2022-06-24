@@ -145,61 +145,82 @@ class SiteController extends Controller
             $model->excelFile = UploadedFile::getInstance($model, 'excelFile');
 
             if ($model->upload()) {
-                $file = Yii::getAlias('@webroot/uploads/') . $model->excelFile->name;
 
-                $reader = IOFactory::createReader(IOFactory::identify($file));
-                $spreadsheet = $reader->load($file);
-                $data = $spreadsheet->getActiveSheet()->toArray(null, true, false, true);
+                $transaction = Record::getDb()->beginTransaction();
 
-                if ($data[7]['B'] == 'GROSS SALES' && $data[43]['B'] == 'NET INCOME') {
-                    $p_l_accounts = array_slice($data, 6, 37);
+                try {
+                    $file = Yii::getAlias('@webroot/uploads/') . $model->excelFile->name;
 
-                    $accounts = ArrayHelper::getColumn($p_l_accounts, 'B');
-                    $columnData = ArrayHelper::getColumn($p_l_accounts, strtoupper($model->column));
+                    $reader = IOFactory::createReader(IOFactory::identify($file));
+                    $spreadsheet = $reader->load($file);
+                    $data = $spreadsheet->getActiveSheet()->toArray(null, true, false, true);
 
-                    $month = trim($data[4][$model->column]);
-                    $year = explode(' ', trim($data[5][$model->column]))[0];
-                    $type = explode(' ', trim($data[5][$model->column]))[1];
+                    $pLStartRow = Tools::getParam('excelDB.profitOrLoss.startRow');
+                    $pLEndRow = Tools::getParam('excelDB.profitOrLoss.endRow');
 
-                    $date = date('Y-m-d', strtotime($month . ' ' . $year));
+                    $bShStartRow = Tools::getParam('excelDB.balanceSheet.startRow');
+                    $bShEndRow = Tools::getParam('excelDB.balanceSheet.endRow');
 
-                    if (!$model->overwrite && Record::find()->where(['type' => $type, 'date' => $date])->count() > 1) {
-                        Yii::$app->session->setFlash('alerts', 'Data for the given period already exits');
+                    if (!($data[$pLStartRow]['B'] == 'GROSS SALES' && $data[$pLEndRow]['B'] == 'NET INCOME')) {
+                        Yii::$app->session->setFlash('alerts', 'Database file is invalid');
                         return $this->render('upload', ['model' => $model]);
                     }
 
-                    if ($month != 'YTD') {
+                    $p_l_accounts = array_slice($data, $pLStartRow - 1, $pLEndRow - $pLStartRow + 1);
 
-                        if ($model->overwrite && Record::find()->where(['type' => $type, 'date' => $date])->count() > 1) {
+                    $accounts = ArrayHelper::getColumn($p_l_accounts, 'B');
+
+                    foreach ($model->column as $selectedColumn) {
+
+                        $columnData = ArrayHelper::getColumn($p_l_accounts, strtoupper($selectedColumn));
+
+                        $month = trim($data[4][$selectedColumn]);
+                        $year = explode(' ', trim($data[5][$selectedColumn]))[0];
+                        $type = explode(' ', trim($data[5][$selectedColumn]))[1];
+
+                        if ($month == 'YTD') { // @todo: Make YTD imports available
+                            Yii::$app->session->setFlash('alerts', 'YTD Imports are not available now');
+                            return $this->render('upload', ['model' => $model]);
+                        }
+
+                        if (!strtotime($month . ' ' . $year)) {
+                            Yii::$app->session->setFlash('alerts', 'Unable to get month and year from column header on column ' . $selectedColumn);
+                            return $this->render('upload', ['model' => $model]);
+                        }
+
+                        $date = date('Y-m-d', strtotime($month . ' ' . $year));
+
+                        if (!$model->overwrite && Record::find()->where(['type' => $type,
+                                                                         'date' => $date])->count() > 1) {
+                            Yii::$app->session->setFlash('alerts', 'Data for the given period already exits for column ' . $selectedColumn);
+                            return $this->render('upload', ['model' => $model]);
+                        }
+
+                        if ($model->overwrite && Record::find()->where(['type' => $type,
+                                                                        'date' => $date])->count() > 1) {
                             Record::deleteAll(['type' => $type, 'date' => $date]);
                         }
 
-                        $transaction = Record::getDb()->beginTransaction();
-
-                        try {
-                            foreach ($columnData as $id => $value) {
-                                $record = new Record();
-                                $record->date = $date;
-                                $record->value = $value;
-                                $record->account_id = $id + 1;
-                                $record->type = $type;
-                                $record->save();
-                            }
-                            $transaction->commit();
-
-                            Yii::$app->session->setFlash('alerts', 'Successfully imported for: ' . $date . ' ' . $type);
-                            return $this->goHome();
-                        } catch (\Exception $e) {
-                            $transaction->rollBack();
-                            Yii::$app->session->setFlash('alerts', 'Something went wrong!');
-                            throw $e;
+                        foreach ($columnData as $id => $value) {
+                            $record = new Record();
+                            $record->date = $date;
+                            $record->value = $value;
+                            $record->account_id = $id + 1;
+                            $record->type = $type;
+                            $record->save();
                         }
-
                     }
-                } else {
-                    Yii::$app->session->setFlash('alerts', 'Database file is invalid');
-                    return $this->render('upload', ['model' => $model]);
+
+                    $transaction->commit();
+
+                    Yii::$app->session->setFlash('alerts', 'Successfully imported for: ' . $date . ' ' . $type);
+                    return $this->goHome();
+                } catch (\Exception $e) {
+                    $transaction->rollBack();
+                    Yii::$app->session->setFlash('alerts', 'Something went wrong! Error: ' . $e->getMessage());
+                    // throw $e;
                 }
+
             }
         }
 
@@ -226,10 +247,28 @@ class SiteController extends Controller
 
     public function actionData()
     {
-        $data = ArrayHelper::index(Record::find()->asArray()->all(), null, ['date', 'type']);
-        $accounts = Data::getAccounts();
+        $this->view->params['container'] = 'container-fluid px-5';
 
-        return $this->render('data', ['data' => $data, 'accounts' => $accounts]);
+        $records = collect(Record::find()
+            ->orderBy(['type' => SORT_ASC, 'date' => SORT_ASC])
+            ->all());
+
+        $data = Record::find()
+            ->select(['date', 'type'])
+            ->groupBy(['date', 'type'])
+            ->orderBy(['type' => SORT_ASC, 'date' => SORT_ASC])
+            ->asArray()
+            ->all();
+
+        $pl_accounts = Data::getPLAccounts();
+        $bSh_accounts = Data::getBalanceSheetAccounts();
+
+        return $this->render('data', [
+            'data' => $data,
+            'pl_accounts' => $pl_accounts,
+            'bSh_accounts' => $bSh_accounts,
+            'records' => $records,
+        ]);
 
     }
 }

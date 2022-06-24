@@ -13,6 +13,7 @@ use yii\base\Model;
  * @property string|null $display_name
  * @property int|null $visible
  * @property int|null $type
+ * @property int|null $statement
  */
 class Account extends Model
 {
@@ -21,6 +22,7 @@ class Account extends Model
     public string $display_name;
     public int $visible = 1;
     public int $type;
+    public string $statement;
 
     const VISIBLE_FALSE = 0;
     const VISIBLE_TRUE = 1;

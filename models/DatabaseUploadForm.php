@@ -23,7 +23,6 @@ class DatabaseUploadForm extends Model
             [['excelFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'xls, xlsx, csv'],
             [['column'], 'required'],
             [['overwrite'], 'boolean'],
-            [['column'], 'string'],
         ];
     }
 

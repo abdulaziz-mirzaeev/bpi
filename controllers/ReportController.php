@@ -19,7 +19,6 @@ class ReportController extends Controller
     {
         $formatter = Yii::$app->formatter;
 
-
         $model = new ReportForm();
 
         $reportForm = $this->request->get('ReportForm');
@@ -51,8 +50,7 @@ class ReportController extends Controller
 
         $selectedReport = $reportForm['reportId'];
 
-
-        $accounts = collect(Data::getAccounts())
+        $accounts = collect(Data::getPLAccounts())
             ->where('visible', Account::VISIBLE_TRUE)
             ->sortBy('id')
             ->all();

@@ -23,7 +23,8 @@
         "moonlandsoft/yii2-phpexcel": "dev-master",
         "yiisoft/yii2-bootstrap5": "2.0.x-dev",
         "tightenco/collect": "^8.83",
-        "vlucas/phpdotenv": "5.4.x-dev"
+        "vlucas/phpdotenv": "5.4.x-dev",
+        "kartik-v/yii2-widget-select2": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
