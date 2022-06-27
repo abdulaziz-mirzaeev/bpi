@@ -8,8 +8,8 @@ $this->title = 'My Yii Application';
 ?>
 <div class="site-index">
 
-    <div class="jumbotron text-center bg-transparent">
-        <h1 class="display-4">Congratulations!</h1>
+    <div class="my-5 text-center bg-transparent">
+        <h1 class="display-2">Congratulations!</h1>
 
         <p class="lead">You have successfully accessed the BPI project.</p>
 

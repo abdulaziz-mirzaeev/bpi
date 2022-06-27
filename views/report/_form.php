@@ -21,7 +21,7 @@ $months = [
 ];
 ?>
 
-<h4 class="font-weight-normal">
+<h4 class="fw-normal">
     Please select months
 </h4>
 

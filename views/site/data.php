@@ -28,7 +28,7 @@ use app\enums\AccountStatement;
         </thead>
         <tbody>
         <tr>
-            <td class="font-weight-bold text-decoration-underline">
+            <td class="fw-bold text-decoration-underline">
                 <?php echo AccountStatement::PROFIT_OR_LOSS; ?>
             </td>
 
@@ -41,12 +41,12 @@ use app\enums\AccountStatement;
                 <td class="fs-6"><?php echo $account->name; ?></td>
                 <?php /** @var \app\models\Record $record */ ?>
                 <?php foreach ($records->where('account_id', $account->id)->all() as $record): ?>
-                    <td class="text-right"><?php echo $record->getValueF(); ?></td>
+                    <td class="text-end"><?php echo $record->getValueF(); ?></td>
                 <?php endforeach; ?>
             </tr>
         <?php endforeach; ?>
         <tr>
-            <td class="font-weight-bold text-decoration-underline">
+            <td class="fw-bold text-decoration-underline">
                 <?php echo AccountStatement::BALANCE_SHEET; ?>
             </td>
 
@@ -57,9 +57,11 @@ use app\enums\AccountStatement;
         <?php foreach ($bSh_accounts as $account): ?>
             <tr>
                 <td class="fs-6"><?php echo $account->name; ?></td>
-                <?php /** @var \app\models\Record $record */ ?>
-                <?php foreach ($records->where('account_id', $account->id)->all() as $record): ?>
-                    <td class="text-right"><?php echo $record->getValueF(); ?></td>
+                <?php foreach ($data as $group): ?>
+                    <?php $record = $records->first(function ($item, $key) use ($account, $group) {
+                        return $item->account_id == $account->id && $item->type == $group['type'] && $item->date == $group['date'];
+                    }); ?>
+                    <td class="text-end"><?php echo $record ? $record->getValueF() : ''; ?></td>
                 <?php endforeach; ?>
             </tr>
         <?php endforeach; ?>

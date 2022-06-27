@@ -18,6 +18,8 @@ class m220605_110640_create_records_table extends Migration
             'value' => $this->decimal(15, 2),
             'date' => $this->date(),
             'type' => $this->string(),
+            'created_at' => $this->integer(11),
+            'updated_at' => $this->integer(11),
         ]);
     }
 

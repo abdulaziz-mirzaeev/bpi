@@ -4,11 +4,13 @@
 /** @var string $content */
 
 use app\assets\AppAsset;
-use yii\bootstrap4\Alert;
-use yii\bootstrap4\Breadcrumbs;
-use yii\bootstrap4\Html;
-use yii\bootstrap4\Nav;
-use yii\bootstrap4\NavBar;
+use yii\bootstrap5\Alert;
+use yii\bootstrap5\Breadcrumbs;
+use yii\bootstrap5\Html;
+use yii\bootstrap5\Nav;
+use yii\bootstrap5\NavBar;
+use yii\bootstrap5\Button;
+use yii\bootstrap5\Toast;
 
 AppAsset::register($this);
 ?>
@@ -48,7 +50,7 @@ AppAsset::register($this);
 </header>
 
 <main role="main" class="flex-shrink-0">
-    <div class="<?php echo $this->params['container'] ?? 'container'?>">
+    <div class="<?php echo $this->params['container'] ?? 'container'?> position-relative">
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
@@ -58,6 +60,32 @@ AppAsset::register($this);
             'body' => Yii::$app->session->getFlash('alerts'),
         ]) ?>
         <?php endif; ?>
+
+        <?php if (!empty(Yii::$app->session->getFlash('messages'))): ?>
+        <div class="toast-container position-fixed end-0 p-3" style="z-index: 11">
+            <?php foreach (Yii::$app->session->getFlash('messages') as $flash): ?>
+                <div
+                    class="toast <?php echo $flash['class'] ?? 'text-white bg-primary'?> border-0"
+                    role="alert"
+                    aria-live="assertive"
+                    aria-atomic="true"
+                >
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="toast-body">
+                            <?php echo $flash['message'] ?>
+                        </div>
+                        <button
+                            type="button"
+                            class="btn-close btn-close-white me-2 m-auto"
+                            data-bs-dismiss="toast"
+                            aria-label="Close"
+                        ></button>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+        <?php endif; ?>
+
         <?= $content ?>
     </div>
 </main>
@@ -65,11 +93,16 @@ AppAsset::register($this);
 <footer class="footer mt-auto py-3 text-muted">
     <div class="container">
         <p class="float-left">&copy; My Company <?= date('Y') ?></p>
-        <p class="float-right"><?= Yii::powered() ?></p>
     </div>
 </footer>
 
 <?php $this->endBody() ?>
 </body>
+<?php $this->registerJs(<<<JS
+    var toastElList = [].slice.call(document.querySelectorAll('.toast'));
+    var toastList = toastElList.map(function (toastEl) {
+      return new bootstrap.Toast(toastEl).show()
+    });   
+JS) ?>
 </html>
 <?php $this->endPage() ?>

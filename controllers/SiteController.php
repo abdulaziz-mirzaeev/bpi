@@ -167,12 +167,13 @@ class SiteController extends Controller
                     }
 
                     $p_l_accounts = array_slice($data, $pLStartRow - 1, $pLEndRow - $pLStartRow + 1);
+                    $bSh_accounts = array_slice($data, $bShStartRow - 1, $bShEndRow - $bShStartRow + 1);
 
-                    $accounts = ArrayHelper::getColumn($p_l_accounts, 'B');
+                    $accounts = ArrayHelper::merge($p_l_accounts, $bSh_accounts);
 
                     foreach ($model->column as $selectedColumn) {
 
-                        $columnData = ArrayHelper::getColumn($p_l_accounts, strtoupper($selectedColumn));
+                        $columnData = ArrayHelper::getColumn($accounts, strtoupper($selectedColumn));
 
                         $month = trim($data[4][$selectedColumn]);
                         $year = explode(' ', trim($data[5][$selectedColumn]))[0];
@@ -207,18 +208,22 @@ class SiteController extends Controller
                             $record->value = $value;
                             $record->account_id = $id + 1;
                             $record->type = $type;
+
                             $record->save();
                         }
+
+                        Yii::$app->session->addFlash('messages', [
+                            'message' => 'Successfully imported ' .
+                                Yii::$app->formatter->asDate($date, 'php:M-Y') . ' ('.$type.')' .
+                                ' from column ' . $selectedColumn,
+                        ]);
                     }
 
                     $transaction->commit();
-
-                    Yii::$app->session->setFlash('alerts', 'Successfully imported for: ' . $date . ' ' . $type);
                     return $this->goHome();
                 } catch (\Exception $e) {
                     $transaction->rollBack();
                     Yii::$app->session->setFlash('alerts', 'Something went wrong! Error: ' . $e->getMessage());
-                    // throw $e;
                 }
 
             }

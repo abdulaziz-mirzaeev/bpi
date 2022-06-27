@@ -22,7 +22,7 @@ use yii\bootstrap5\Html;
 ?>
 
 <h2 class="text-center">Dybaco Construction</h2>
-<h4 class="text-center font-weight-light text-uppercase">BPI Scoreboards</h4>
+<h4 class="text-center fw-light text-uppercase">BPI Scoreboards</h4>
 <p>
     Highly profitable business owners with sustainable cash reserves set aside time each month to review their business results.
     They know that their profit plan is their best measurement for success.
@@ -61,7 +61,7 @@ if (isset($reportType)) {
             // NET SALES
             case 5: 
                 $(this).css({'borderTop': '2px solid var(--bs-info)'})
-                $('td:first-child', this).addClass('text-info font-weight-bold')
+                $('td:first-child', this).addClass('text-info fw-bold')
                 break;
             // Sales Commission
             case 6:
@@ -74,18 +74,18 @@ if (isset($reportType)) {
             // GROSS PROFIT
             case 16:
                 $(this).css({'borderBottom': '2px solid var(--bs-orange)'})
-                $('td:first-child', this).addClass('text-success font-weight-bold')
+                $('td:first-child', this).addClass('text-success fw-bold')
                 break;
             case 28:
                 $(this).css({'borderBottom': '2px solid var(--bs-orange)'})
                 break;
             case 29:
                 $(this).css({'borderBottom': '2px solid var(--bs-secondary)'})
-                $('td:first-child', this).addClass('text-success font-weight-bold');
+                $('td:first-child', this).addClass('text-success fw-bold');
                 break;
             case 37:
                 $(this).css({'borderTop': '2px solid var(--bs-secondary)'})
-                $('td:first-child', this).addClass('text-dark font-weight-bold')
+                $('td:first-child', this).addClass('text-dark fw-bold')
                 break;
         }
         
