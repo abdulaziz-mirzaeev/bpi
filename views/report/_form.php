@@ -22,21 +22,10 @@ $months = [
 ?>
 
 <h4 class="fw-normal">
-    Please select months
+    Please select month
 </h4>
 
-<div class="row">
-    <div class="col">
-        <?php echo $form->field($model, 'monthPrevious')->dropDownList($months); ?>
-    </div>
-
-    <div class="col">
-        <?php echo $form->field($model, 'monthActual')->dropDownList($months); ?>
-    </div>
-    <div class="col">
-        <?php echo $form->field($model, 'monthPlan')->dropDownList($months); ?>
-    </div>
-</div>
+<?php echo $form->field($model, 'month')->dropDownList($months); ?>
 
 <?php echo $form->field($model, 'reportId')->dropDownList(['R7 Display', 'R8 Display'], ['prompt' => 'Select report...']); ?>
 

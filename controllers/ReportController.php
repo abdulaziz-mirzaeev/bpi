@@ -23,11 +23,7 @@ class ReportController extends Controller
 
         $reportForm = $this->request->get('ReportForm');
         if (!$reportForm) {
-            $currentMonth = $formatter->asDate('now', 'php:m');
-
-            $model->monthActual = $currentMonth;
-            $model->monthPlan = $currentMonth;
-            $model->monthPrevious = $currentMonth;
+            $model->month = $formatter->asDate('now', 'php:m');
 
             return $this->render('report', ['model' => $model]);
         }
@@ -36,9 +32,9 @@ class ReportController extends Controller
 
         $currentYear = Yii::$app->formatter->asDate('now', 'php:Y');
 
-        $dateActual = $currentYear . '-' . $reportForm['monthActual'];
-        $datePlanned = $currentYear . '-' . $reportForm['monthPlan'];
-        $datePrevious = ($currentYear - 1) . '-' . $reportForm['monthPrevious'];
+        $dateActual = $currentYear . '-' . $reportForm['month'];
+        $datePlanned = $currentYear . '-' . $reportForm['month'];
+        $datePrevious = ($currentYear - 1) . '-' . $reportForm['month'];
 
         $dateActual = $formatter->asDate($dateActual, 'php:Y-m');
         $datePlanned = $formatter->asDate($datePlanned, 'php:Y-m');

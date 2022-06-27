@@ -7,12 +7,13 @@
 
 use app\enums\AccountStatement;
 
+$this->title = 'Data'
 ?>
 
 <h1><i>Under Development</i></h1>
 
 <div class="table-responsive">
-    <table class="table table-bordered">
+    <table class="table table-bordered table-hover">
         <thead class="text-center">
         <tr>
             <th scope="col"></th>

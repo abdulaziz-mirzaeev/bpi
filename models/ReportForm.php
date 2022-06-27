@@ -11,26 +11,22 @@ class ReportForm extends Model
     const REPORT_R7 = 0;
     const REPORT_R8 = 1;
 
-    public $monthPrevious;
-    public $monthActual;
-    public $monthPlan;
+    public $month;
 
     public $reportId;
 
     public function rules()
     {
         return [
-            [['monthPrevious', 'monthActual', 'monthPlan', 'reportId'], 'required'],
-            [['monthPrevious', 'monthActual', 'monthPlan', 'reportId'], 'integer']
+            [['month', 'reportId'], 'required'],
+            [['month', 'reportId'], 'integer']
         ];
     }
 
     public function attributeLabels()
     {
         return [
-            'monthPrevious' => 'Previous',
-            'monthActual' => 'Actual',
-            'monthPlan' => 'Plan',
+            'month' => 'Month',
             'reportId' => 'Report'
         ];
     }
