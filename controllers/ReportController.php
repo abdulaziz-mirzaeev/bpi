@@ -7,8 +7,10 @@ use app\enums\RecordType;
 use app\helpers\Data;
 use app\helpers\Tools;
 use app\models\Account;
+use app\models\Dataset;
 use app\models\Record;
 use app\models\ReportForm;
+use app\models\ReportR7;
 use Codeception\PHPUnit\ResultPrinter\Report;
 use Yii;
 use yii\web\Controller;
@@ -99,5 +101,12 @@ class ReportController extends Controller
             ]);
         }
 
+    }
+
+    public function actionDataset()
+    {
+        $reportModel = new ReportR7('2022-05-01');
+
+        return $this->render('display_r7_test', ['model' => $reportModel]);
     }
 }

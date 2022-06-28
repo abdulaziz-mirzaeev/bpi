@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\helpers\Data;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -63,7 +64,7 @@ class Record extends ActiveRecord
 
     public function getAccount()
     {
-        return $this->hasOne(Account::class, ['id' => 'account_id']);
+        return Account::getById($this->account_id);
     }
 
     public function getValueF()

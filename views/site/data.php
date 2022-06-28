@@ -7,10 +7,8 @@
 
 use app\enums\AccountStatement;
 
-$this->title = 'Data'
+$this->title = 'Database'
 ?>
-
-<h1><i>Under Development</i></h1>
 
 <div class="table-responsive">
     <table class="table table-bordered table-hover">

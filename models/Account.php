@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\helpers\Data;
 use Yii;
 use yii\base\Model;
 
@@ -61,8 +62,13 @@ class Account extends Model
 //        ];
 //    }
 
-    public function getDisplayLabel()
+    public function getDisplayLabel(): string
     {
         return $this->display_name ?? $this->name;
+    }
+
+    public static function getById(int $id): Account
+    {
+        return collect(Data::getAllAccounts())->first(fn(Account $a) => $a->id === $id);
     }
 }
