@@ -38,6 +38,44 @@ class RecordPair
         return $formatting ? Yii::$app->formatter->asPercent($value) : $value;
     }
 
+    public function percentageA2PStyle()
+    {
+        $value = $this->percentageA2P(false);
+
+        if (!is_numeric($value)) {
+            return '';
+        }
+
+        $redStyle = "background-color: red; color: #fff;";
+        $purpleStyle = "background-color: var(--bs-purple); color: #fff;";
+        $yellowStyle = "background-color: var(--bs-warning); color: #000;";
+        $greenStyle = "background-color: var(--bs-success); color: #fff;";
+
+        $accountType = $this->account->type;
+
+        if ($accountType == Account::TYPE_INCOME) {
+            if ($value < 0.8 ) {
+                return $redStyle;
+            } elseif ($value >= 0.8 && $value < 0.95 ) {
+                return $yellowStyle;
+            } elseif ($value >= 0.95 && $value < 1.1) {
+                return $greenStyle;
+            } elseif ($value >= 1.1) {
+                return $purpleStyle;
+            }
+        } elseif ($accountType == Account::TYPE_EXPENSE) {
+            if ($value < 0.8 ) {
+                return $purpleStyle;
+            } elseif ($value >= 0.8 && $value < 0.95 ) {
+                return $yellowStyle;
+            } elseif ($value >= 0.95 && $value < 1.1) {
+                return $greenStyle;
+            } elseif ($value >= 1.1) {
+                return $redStyle;
+            }
+        }
+    }
+
     public function dollarDifferenceA2P($formatting = true)
     {
         $value = $this->actual->value - $this->plan->value;
