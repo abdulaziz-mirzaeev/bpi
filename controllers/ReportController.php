@@ -32,9 +32,16 @@ class ReportController extends Controller
 
         $model->load($this->request->get());
 
-        $currentYear = Yii::$app->formatter->asDate('now', 'php:Y');
+        $selectedReport = $reportForm['reportId'];
+
+        $currentYear = $formatter->asDate('now', 'php:Y');
 
         $dateActual = $currentYear . '-' . $reportForm['month'];
+
+        if ($selectedReport == ReportForm::REPORT_PT1) {
+            return $this->redirect(['a2p-pl-pt', 'date' => $dateActual]);
+        }
+
         $datePlanned = $currentYear . '-' . $reportForm['month'];
         $datePrevious = ($currentYear - 1) . '-' . $reportForm['month'];
 
@@ -45,8 +52,6 @@ class ReportController extends Controller
         $actualYear = $formatter->asDate($dateActual, 'php:Y');
         $planYear = $formatter->asDate($datePlanned, 'php:Y');
         $previousYear = $formatter->asDate($datePrevious, 'php:Y');
-
-        $selectedReport = $reportForm['reportId'];
 
         $accounts = collect(Data::getPLAccounts())
             ->where('visible', Account::VISIBLE_TRUE)
@@ -103,9 +108,9 @@ class ReportController extends Controller
 
     }
 
-    public function actionDataset()
+    public function actionA2pPlPt($date)
     {
-        $reportModel = new ReportR7('2022-05-01');
+        $reportModel = new ReportR7($date);
 
         return $this->render('display_r7_test', ['model' => $reportModel]);
     }

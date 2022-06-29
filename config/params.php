@@ -16,6 +16,9 @@ return [
             'endRow' => 66,
         ],
     ],
+    'company' => [
+        'name' => 'Dybacco Constructions',
+    ],
 
     // Krajee Settings
     'bsVersion' => '5.x',

@@ -60,18 +60,12 @@ class ReportR7
 
     public function getDirectCostsSubset()
     {
-        return $this->getRecordsByAccounts([
-            AccountId::TOTAL_SALES_COMMISSION,
-            AccountId::TOTAL_DIRECT_LABOR,
-            AccountId::TOTAL_SUBCONTRACTORS,
-            AccountId::TOTAL_MATERIALS,
-            AccountId::TOTAL_EQUIPMENT,
-            AccountId::TOTAL_DIRECT_TRANSPORTATION,
-            AccountId::TOTAL_DIRECT_TRAVEL,
-            AccountId::UNIQUE_COGS_ITEM_B_TO_BUSINESS,
-            AccountId::TOTAL_OTHER_DIRECT_COSTS,
-            AccountId::COGS,
-        ]);
+        return $this->getRecordsByAccounts(Account::$directCostsSubset);
+    }
+
+    public function getCOGSsubset()
+    {
+        return $this->getRecordsByAccounts([AccountId::COGS]);
     }
 
     public function getGrossProfitSubset()
@@ -81,20 +75,12 @@ class ReportR7
 
     public function getOperatingCostsSubset()
     {
-        return $this->getRecordsByAccounts([
-            AccountId::TOTAL_MARKETING_INVESTMENT,
-            AccountId::TOTAL_TRAVEL_AND_ENTERTAINMENT,
-            AccountId::TOTAL_OFFICE_EXPENSE,
-            AccountId::TOTAL_OFFICE_PAYROLL,
-            AccountId::TOTAL_INSURANCE,
-            AccountId::TOTAL_OUTSIDE_FEES,
-            AccountId::TOTAL_PROPERTY_EXPENSE,
-            AccountId::TOTAL_UTILIITIES,
-            AccountId::UNIQUE_SG_AND_A_ITEM_C_TO_BUSINESS,
-            AccountId::UNIQUE_SG_AND_A_ITEM_D_TO_BUSINESS,
-            AccountId::TOTAL_MISCELLANEOUS_EXPENSE,
-            AccountId::TOTAL_SG_AND_A_EXPENSE,
-        ]);
+        return $this->getRecordsByAccounts(Account::$operatingCostsSubset);
+    }
+
+    public function getTotalSGnAExpenseSubset()
+    {
+        return $this->getRecordsByAccounts([AccountId::TOTAL_SG_AND_A_EXPENSE]);
     }
 
     public function getOperatingIncomeSubset()
@@ -104,15 +90,7 @@ class ReportR7
 
     public function getOthersSubset()
     {
-        return $this->getRecordsByAccounts([
-            AccountId::TOTAL_OTHER_INCOME,
-            AccountId::TOTAL_OTHER_EXPENSES,
-            AccountId::TOTAL_OWNERS_COMPENSATION,
-            AccountId::TOTAL_INTEREST,
-            AccountId::TOTAL_TAXES,
-            AccountId::TOTAL_DEP_AND_AMM_EXPENSE,
-            AccountId::TOTAL_NONOPERATING_EXPENSE_LESS_NONOPERATING_INCOME,
-        ]);
+        return $this->getRecordsByAccounts(Account::$othersSubset);
     }
 
     public function getNetIncomeSubset()

@@ -10,6 +10,13 @@ class ReportForm extends Model
 {
     const REPORT_R7 = 0;
     const REPORT_R8 = 1;
+    const REPORT_PT1 = 2;
+
+    public static $reportNames = [
+        self::REPORT_R7 => 'Report R7',
+        self::REPORT_R8 => 'Report R8',
+        self::REPORT_PT1 => 'Actual To Plan P&L (PT#1)',
+    ];
 
     public $month;
 

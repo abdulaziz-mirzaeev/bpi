@@ -1,4 +1,6 @@
 <?php
+
+use app\models\ReportForm;
 use yii\bootstrap5\ActiveForm;
 use yii\bootstrap5\Html;
 
@@ -27,7 +29,10 @@ $months = [
 
 <?php echo $form->field($model, 'month')->dropDownList($months); ?>
 
-<?php echo $form->field($model, 'reportId')->dropDownList(['R7 Display', 'R8 Display'], ['prompt' => 'Select report...']); ?>
+<?php echo $form
+    ->field($model, 'reportId')
+    ->dropDownList(ReportForm::$reportNames, ['prompt' => 'Select report...']);
+?>
 
 <?php echo Html::submitButton('Submit', ['class' => 'btn btn-success']); ?>
 
