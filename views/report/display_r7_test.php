@@ -21,6 +21,20 @@ $date = $formatter->asDate($model->date, 'php:Y');
 
 $actualYearLabel = $date . ' ' . RecordType::ACTUAL;
 $planYearLabel = $date . ' ' . RecordType::PLAN;
+
+function printThresholdRow($value, $message): string {
+    $valueF = Yii::$app->formatter->asDecimal($value, 0);
+    return <<<HTML
+        <tr>
+            <td colspan="4" class="fw-light text-muted text-end">
+                <small>$message</small>
+            </td>
+            <td style="background-color: lightyellow;" class="text-end">
+                $valueF
+            </td>
+        </tr>
+    HTML;
+}
 ?>
 
 <h2 class="text-center"><?php echo Yii::$app->params['company']['name'] ?? 'Dybacco Constructions'; ?></h2>
@@ -78,14 +92,10 @@ $planYearLabel = $date . ' ' . RecordType::PLAN;
 
     <tbody style="border: 2px solid var(--bs-info);">
         <?php echo $this->render('_r7_cells', ['recordPairs' => $model->getNetSalesSubset()]); ?>
-        <tr>
-            <td colspan="4" class="fw-light text-muted text-end">
-                <small>Actual sales compared to plan threshold indicating a significant issue.</small>
-            </td>
-            <td style="background-color: lightyellow;" class="text-end">
-                -200,000
-            </td>
-        </tr>
+        <?php echo printThresholdRow(
+            Tools::getParam('company.a2p_p&l.thresholds.dollarDifference.NET_SALES'),
+            'Actual sales compared to plan threshold indicating a significant issue.'
+        ); ?>
     </tbody>
     
     <?php Tools::printEmptyRow(); ?>
@@ -93,14 +103,10 @@ $planYearLabel = $date . ' ' . RecordType::PLAN;
 
     <tbody style="border: 2px solid var(--bs-warning);">
         <?php echo $this->render('_r7_cells', ['recordPairs' => $model->getDirectCostsSubset()]); ?>
-        <tr>
-            <td colspan="4" class="fw-light text-muted text-end">
-                <small>Actual direct expenses greater than plan threshold indicating a significant issue.</small>
-            </td>
-            <td style="background-color: lightyellow;" class="text-end">
-                50,000
-            </td>
-        </tr>
+        <?php echo printThresholdRow(
+            Tools::getParam('company.a2p_p&l.thresholds.dollarDifference.DIRECT_COSTS'),
+            'Actual direct expenses greater than plan threshold indicating a significant issue.'
+        ); ?>
         <?php echo $this->render('_r7_cells', ['recordPairs' => $model->getCOGSsubset()]); ?>
     </tbody>
     
@@ -120,14 +126,10 @@ $planYearLabel = $date . ' ' . RecordType::PLAN;
     
     <tbody style="border: 2px solid var(--bs-orange);">
         <?php echo $this->render('_r7_cells', ['recordPairs' => $model->getOperatingCostsSubset()]); ?>
-        <tr>
-            <td colspan="4" class="fw-light text-muted text-end">
-                <small>Actual indirect expenses greater than plan threshold indicating a significant issue.</small>
-            </td>
-            <td style="background-color: lightyellow;" class="text-end">
-                5,000
-            </td>
-        </tr>
+        <?php echo printThresholdRow(
+            Tools::getParam('company.a2p_p&l.thresholds.dollarDifference.INDIRECT_COSTS'),
+            'Actual indirect expenses greater than plan threshold indicating a significant issue.'
+        ); ?>
         <?php echo $this->render('_r7_cells', ['recordPairs' => $model->getTotalSGnAExpenseSubset()]); ?>
     </tbody>
 
@@ -143,6 +145,11 @@ $planYearLabel = $date . ' ' . RecordType::PLAN;
 
     <tbody style="border: 2px solid var(--bs-secondary);">
         <?php echo $this->render('_r7_cells', ['recordPairs' => $model->getOthersSubset()]); ?>
+        <?php echo printThresholdRow(
+            Tools::getParam('company.a2p_p&l.thresholds.dollarDifference.NET_NONOPERATING_COSTS'),
+            'Actual nonoperating expenses greater than plan threshold indicating a significant issue.'
+        ); ?>
+        <?php echo $this->render('_r7_cells', ['recordPairs' => $model->getNetNonOperatingCosts()]); ?>
     </tbody>
 
     <?php Tools::printEmptyRow(); ?>

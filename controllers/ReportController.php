@@ -4,6 +4,7 @@
 namespace app\controllers;
 
 use app\enums\RecordType;
+use app\exceptions\A2PPLNotFoundForDateAndTypeException;
 use app\helpers\Data;
 use app\helpers\Tools;
 use app\models\Account;
@@ -110,8 +111,16 @@ class ReportController extends Controller
 
     public function actionA2pPlPt($date)
     {
-        $reportModel = new ReportR7($date);
+        try {
+            $reportModel = new ReportR7($date);
+            return $this->render('display_r7_test', ['model' => $reportModel]);
+        } catch (A2PPLNotFoundForDateAndTypeException $e) {
+            Yii::$app->session->addFlash('messages', [
+                'message' => $e->getMessage(),
+                'class' => 'text-white bg-danger',
+            ]);
+            return $this->redirect(['report/index']);
+        }
 
-        return $this->render('display_r7_test', ['model' => $reportModel]);
     }
 }

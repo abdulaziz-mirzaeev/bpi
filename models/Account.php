@@ -70,7 +70,6 @@ class Account extends Model
         AccountId::TOTAL_INTEREST,
         AccountId::TOTAL_TAXES,
         AccountId::TOTAL_DEP_AND_AMM_EXPENSE,
-        AccountId::TOTAL_NONOPERATING_EXPENSE_LESS_NONOPERATING_INCOME,
     ];
 
 //    /**

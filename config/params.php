@@ -18,6 +18,16 @@ return [
     ],
     'company' => [
         'name' => 'Dybacco Constructions',
+        'a2p_p&l' => [
+            'thresholds' => [
+                'dollarDifference' => [
+                    'NET_SALES' => -200000,
+                    'DIRECT_COSTS' => 50000,
+                    'INDIRECT_COSTS' => 5000,
+                    'NET_NONOPERATING_COSTS' => 5000,
+                ],
+            ],
+        ],
     ],
 
     // Krajee Settings

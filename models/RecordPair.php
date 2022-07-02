@@ -4,6 +4,8 @@
 namespace app\models;
 
 
+use app\enums\AccountId;
+use app\helpers\Tools;
 use Yii;
 
 class RecordPair
@@ -26,6 +28,25 @@ class RecordPair
         $this->plan = $plan;
         $this->account = Account::getById($account);
         $this->model = $model;
+    }
+
+    public function getAccountClass()
+    {
+        $accountClass = '';
+        switch ($this->account->id) {
+            case AccountId::NET_SALES:
+                $accountClass = 'fw-bold text-info';
+                break;
+            case AccountId::GROSS_PROFIT:
+            case AccountId::OPERATING_INCOME:
+                $accountClass = 'fw-bold text-success';
+                break;
+            case AccountId::NET_INCOME:
+                $accountClass = 'fw-bold text-dark';
+                break;
+        }
+
+        return $accountClass;
     }
 
     public function percentageA2P($formatting = true)
@@ -80,6 +101,39 @@ class RecordPair
     {
         $value = $this->actual->value - $this->plan->value;
         return $formatting ? Yii::$app->formatter->asDecimal($value, 0) : $value;
+    }
+
+    public function dollarDifferenceA2PStyle()
+    {
+        $value = $this->dollarDifferenceA2P(false);
+
+        $redStyle = "background-color: red; color: #fff;";
+
+        $accountId = $this->account->id;
+
+        $othersSubset = Account::$othersSubset;
+        array_shift($othersSubset);
+        array_shift($othersSubset);
+
+        if ($accountId == AccountId::NET_SALES) {
+            if ($value < Tools::getParam('company.a2p_p&l.thresholds.dollarDifference.NET_SALES')) {
+                return $redStyle;
+            }
+        } else if (in_array($accountId, Account::$directCostsSubset)) {
+            if ($value > Tools::getParam('company.a2p_p&l.thresholds.dollarDifference.DIRECT_COSTS')) {
+                return $redStyle;
+            }
+        } else if (in_array($accountId, Account::$operatingCostsSubset)) {
+            if ($value > Tools::getParam('company.a2p_p&l.thresholds.dollarDifference.INDIRECT_COSTS')) {
+                return $redStyle;
+            }
+        } else if (in_array($accountId, $othersSubset)) {
+            if ($value > Tools::getParam('company.a2p_p&l.thresholds.dollarDifference.NET_NONOPERATING_COSTS')) {
+                return $redStyle;
+            }
+        }
+
+        return '';
     }
 
     public function percentageA2NetSales($formatting = true)

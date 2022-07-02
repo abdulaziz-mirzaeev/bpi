@@ -20,13 +20,8 @@ class ReportR7
     {
         $this->date = date('Y-m', strtotime($date));
 
-        try {
-            $this->actual = new Dataset($this->date, RecordType::ACTUAL);
-            $this->plan = new Dataset($this->date, RecordType::PLAN);
-        } catch (Exception $e) {
-            throw $e;
-        }
-
+        $this->actual = new Dataset($this->date, RecordType::ACTUAL);
+        $this->plan = new Dataset($this->date, RecordType::PLAN);
     }
 
 
@@ -91,6 +86,11 @@ class ReportR7
     public function getOthersSubset()
     {
         return $this->getRecordsByAccounts(Account::$othersSubset);
+    }
+
+    public function getNetNonOperatingCosts()
+    {
+        return $this->getRecordsByAccounts([AccountId::TOTAL_NONOPERATING_EXPENSE_LESS_NONOPERATING_INCOME]);
     }
 
     public function getNetIncomeSubset()
