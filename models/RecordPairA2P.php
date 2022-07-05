@@ -8,19 +8,19 @@ use app\enums\AccountId;
 use app\helpers\Tools;
 use Yii;
 
-class RecordPair
+class RecordPairA2P
 {
     public Record $actual;
     public Record $plan;
     public Account $account;
-    public ReportR7 $model;
+    public ReportA2P $model;
 
     /**
      * RecordPair constructor.
      * @param Record $actual
      * @param Record $plan
      * @param int $account
-     * @param ReportR7 $model
+     * @param ReportA2P $model
      */
     public function __construct(Record $actual, Record $plan, int $account, $model)
     {

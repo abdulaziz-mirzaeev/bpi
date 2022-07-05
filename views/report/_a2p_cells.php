@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \app\models\RecordPair[] $recordPairs
+ * @var \app\models\RecordPairA2P[] $recordPairs
  */
 
 use app\enums\AccountId;

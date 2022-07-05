@@ -8,7 +8,7 @@ namespace app\models;
  */
 
 use app\enums\RecordType;
-use app\exceptions\A2PPLNotFoundForDateAndTypeException;
+use app\exceptions\RecordsNotFoundForDateAndTypeException;
 use app\helpers\Data;
 use Yii;
 use yii\base\InvalidArgumentException;
@@ -34,8 +34,8 @@ class Dataset
             ->all();
 
         if (empty($records)) {
-            throw new A2PPLNotFoundForDateAndTypeException(
-                "Records for type <strong>{$type}</strong> and date <strong>{$date}</strong> not found!"
+            throw new RecordsNotFoundForDateAndTypeException(
+                "Records for type {$type} and date {$date} not found!"
             );
         }
 

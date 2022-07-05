@@ -6,7 +6,7 @@
  * @var string $planYear
  * @var Account[] $accounts
  *
- * @var \app\models\ReportR7 $model
+ * @var \app\models\ReportA2P $model
  * @var \yii\web\View $this
  */
 
@@ -91,7 +91,7 @@ function printThresholdRow($value, $message): string {
     <?php Tools::printRowMessage($model->getNetSalesInterpretation()); ?>
 
     <tbody style="border: 2px solid var(--bs-info);">
-        <?php echo $this->render('_r7_cells', ['recordPairs' => $model->getNetSalesSubset()]); ?>
+        <?php echo $this->render('_a2p_cells', ['recordPairs' => $model->getNetSalesSubset()]); ?>
         <?php echo printThresholdRow(
             Tools::getParam('company.a2p_p&l.thresholds.dollarDifference.NET_SALES'),
             'Actual sales compared to plan threshold indicating a significant issue.'
@@ -102,12 +102,12 @@ function printThresholdRow($value, $message): string {
     <?php Tools::printRowMessage($model->getCogsInterpretation()); ?>
 
     <tbody style="border: 2px solid var(--bs-warning);">
-        <?php echo $this->render('_r7_cells', ['recordPairs' => $model->getDirectCostsSubset()]); ?>
+        <?php echo $this->render('_a2p_cells', ['recordPairs' => $model->getDirectCostsSubset()]); ?>
         <?php echo printThresholdRow(
             Tools::getParam('company.a2p_p&l.thresholds.dollarDifference.DIRECT_COSTS'),
             'Actual direct expenses greater than plan threshold indicating a significant issue.'
         ); ?>
-        <?php echo $this->render('_r7_cells', ['recordPairs' => $model->getCOGSsubset()]); ?>
+        <?php echo $this->render('_a2p_cells', ['recordPairs' => $model->getCOGSsubset()]); ?>
     </tbody>
     
     <?php Tools::printEmptyRow(); ?>
@@ -118,45 +118,45 @@ function printThresholdRow($value, $message): string {
     ?>
     
     <tbody>
-        <?php echo $this->render('_r7_cells', ['recordPairs' => $model->getGrossProfitSubset()]); ?>
+        <?php echo $this->render('_a2p_cells', ['recordPairs' => $model->getGrossProfitSubset()]); ?>
     </tbody>
 
     <?php Tools::printEmptyRow(); ?>
     <?php Tools::printRowMessage($model->getOperatingCostsInterpretation()); ?>
     
     <tbody style="border: 2px solid var(--bs-orange);">
-        <?php echo $this->render('_r7_cells', ['recordPairs' => $model->getOperatingCostsSubset()]); ?>
+        <?php echo $this->render('_a2p_cells', ['recordPairs' => $model->getOperatingCostsSubset()]); ?>
         <?php echo printThresholdRow(
             Tools::getParam('company.a2p_p&l.thresholds.dollarDifference.INDIRECT_COSTS'),
             'Actual indirect expenses greater than plan threshold indicating a significant issue.'
         ); ?>
-        <?php echo $this->render('_r7_cells', ['recordPairs' => $model->getTotalSGnAExpenseSubset()]); ?>
+        <?php echo $this->render('_a2p_cells', ['recordPairs' => $model->getTotalSGnAExpenseSubset()]); ?>
     </tbody>
 
     <?php Tools::printEmptyRow(); ?>
     <?php Tools::printRowMessage($model->getOperatingIncomeInterpretation()); ?>
 
     <tbody>
-        <?php echo $this->render('_r7_cells', ['recordPairs' => $model->getOperatingIncomeSubset()]); ?>
+        <?php echo $this->render('_a2p_cells', ['recordPairs' => $model->getOperatingIncomeSubset()]); ?>
     </tbody>
 
     <?php Tools::printEmptyRow(); ?>
     <?php Tools::printRowMessage($model->getNonoperatingCostsInterpretation()); ?>
 
     <tbody style="border: 2px solid var(--bs-secondary);">
-        <?php echo $this->render('_r7_cells', ['recordPairs' => $model->getOthersSubset()]); ?>
+        <?php echo $this->render('_a2p_cells', ['recordPairs' => $model->getOthersSubset()]); ?>
         <?php echo printThresholdRow(
             Tools::getParam('company.a2p_p&l.thresholds.dollarDifference.NET_NONOPERATING_COSTS'),
             'Actual nonoperating expenses greater than plan threshold indicating a significant issue.'
         ); ?>
-        <?php echo $this->render('_r7_cells', ['recordPairs' => $model->getNetNonOperatingCosts()]); ?>
+        <?php echo $this->render('_a2p_cells', ['recordPairs' => $model->getNetNonOperatingCosts()]); ?>
     </tbody>
 
     <?php Tools::printEmptyRow(); ?>
     <?php Tools::printRowMessage($model->getNetIncomeInterpretation()); ?>
 
     <tbody>
-        <?php echo $this->render('_r7_cells', ['recordPairs' => $model->getNetIncomeSubset()]); ?>
+        <?php echo $this->render('_a2p_cells', ['recordPairs' => $model->getNetIncomeSubset()]); ?>
     </tbody>
 </table>
 

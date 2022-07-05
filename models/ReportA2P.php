@@ -9,11 +9,9 @@ use app\enums\AccountStatement;
 use app\enums\ActualToPlanScoreCodes;
 use app\enums\RecordType;
 use app\helpers\Tools;
-use Exception;
-use Tightenco\Collect\Support\Collection;
 use Yii;
 
-class ReportR7
+class ReportA2P
 {
     public Dataset $actual;
     public Dataset $plan;
@@ -29,7 +27,7 @@ class ReportR7
 
 
     /**
-     * @return RecordPair[]
+     * @return RecordPairA2P[]
      */
     public function getRecords()
     {
@@ -41,7 +39,7 @@ class ReportR7
             })
             ->groupBy('account_id')
             ->map(function ($recordGroup, $key) {
-                return new RecordPair(
+                return new RecordPairA2P(
                     $recordGroup->first(fn(Record $item) => $item->type === RecordType::ACTUAL),
                     $recordGroup->first(fn(Record $item) => $item->type === RecordType::PLAN),
                     $key,
@@ -107,14 +105,14 @@ class ReportR7
      */
     public function getRecordsByAccounts(array $accountIds)
     {
-        return collect($this->getRecords())->filter(function (RecordPair $recordPair) use ($accountIds) {
+        return collect($this->getRecords())->filter(function (RecordPairA2P $recordPair) use ($accountIds) {
             return in_array($recordPair->account->id, $accountIds);
         })->all();
     }
 
-    public function getRecordByAccount(int $accountId): RecordPair
+    public function getRecordByAccount(int $accountId): RecordPairA2P
     {
-        return collect($this->getRecords())->filter(function (RecordPair $recordPair) use ($accountId) {
+        return collect($this->getRecords())->filter(function (RecordPairA2P $recordPair) use ($accountId) {
             return $recordPair->account->id == $accountId;
         })->first();
     }

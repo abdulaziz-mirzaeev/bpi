@@ -4,14 +4,14 @@
 namespace app\controllers;
 
 use app\enums\RecordType;
-use app\exceptions\A2PPLNotFoundForDateAndTypeException;
+use app\exceptions\RecordsNotFoundForDateAndTypeException;
 use app\helpers\Data;
 use app\helpers\Tools;
 use app\models\Account;
 use app\models\Dataset;
 use app\models\Record;
 use app\models\ReportForm;
-use app\models\ReportR7;
+use app\models\ReportA2P;
 use Codeception\PHPUnit\ResultPrinter\Report;
 use Yii;
 use yii\web\Controller;
@@ -112,9 +112,9 @@ class ReportController extends Controller
     public function actionA2pPlPt($date)
     {
         try {
-            $reportModel = new ReportR7($date);
-            return $this->render('display_r7_test', ['model' => $reportModel]);
-        } catch (A2PPLNotFoundForDateAndTypeException $e) {
+            $reportModel = new ReportA2P($date);
+            return $this->render('report_a2p', ['model' => $reportModel]);
+        } catch (RecordsNotFoundForDateAndTypeException $e) {
             Yii::$app->session->addFlash('messages', [
                 'message' => $e->getMessage(),
                 'class' => 'text-white bg-danger',
