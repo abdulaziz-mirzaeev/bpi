@@ -88,7 +88,7 @@ function printThresholdRow($value, $message): string {
         </tr>
     </thead>
 
-    <?php Tools::printRowMessage('Net Sales are significantly better than plan.  The question is why? '); ?>
+    <?php Tools::printRowMessage($model->getNetSalesInterpretation()); ?>
 
     <tbody style="border: 2px solid var(--bs-info);">
         <?php echo $this->render('_r7_cells', ['recordPairs' => $model->getNetSalesSubset()]); ?>
@@ -99,7 +99,7 @@ function printThresholdRow($value, $message): string {
     </tbody>
     
     <?php Tools::printEmptyRow(); ?>
-    <?php Tools::printRowMessage('COGS came in significantly more than planned leading to Gross Profit of  $161,918. he red shaded cells to the right show you what is driving your upcoming cash flow pressures. '); ?>
+    <?php Tools::printRowMessage($model->getCogsInterpretation()); ?>
 
     <tbody style="border: 2px solid var(--bs-warning);">
         <?php echo $this->render('_r7_cells', ['recordPairs' => $model->getDirectCostsSubset()]); ?>
@@ -114,7 +114,7 @@ function printThresholdRow($value, $message): string {
 
     <?php
     $message = "Exceeding your sales plan by $544,506 while missing your Gross Profit plan by -$178,205 is a serious business problem.  Generating negative Gross Profit is both the surest and fastest way to going out of business.  Your business is not sustainable on $161,918 in Gross Profit.  You either need to immediately determine how you get closer to a Gross Margin of  31% or stop selling so much";
-    Tools::printRowMessage($message);
+    Tools::printRowMessage($message); // @todo Make Gross Profit Messages Dynamic
     ?>
     
     <tbody>
@@ -122,7 +122,7 @@ function printThresholdRow($value, $message): string {
     </tbody>
 
     <?php Tools::printEmptyRow(); ?>
-    <?php Tools::printRowMessage('You spent more than planned on indirect costs contributing to your Operating Income problems.  The red shaded cells to the right show you where this is happening.'); ?>
+    <?php Tools::printRowMessage($model->getOperatingCostsInterpretation()); ?>
     
     <tbody style="border: 2px solid var(--bs-orange);">
         <?php echo $this->render('_r7_cells', ['recordPairs' => $model->getOperatingCostsSubset()]); ?>
@@ -134,14 +134,14 @@ function printThresholdRow($value, $message): string {
     </tbody>
 
     <?php Tools::printEmptyRow(); ?>
-    <?php Tools::printRowMessage('Missing your sales goal by  49%  has led to your being  48%  of your Gross Profit goal resulting in  negative Operating Income of -$271,047'); ?>
+    <?php Tools::printRowMessage($model->getOperatingIncomeInterpretation()); ?>
 
     <tbody>
         <?php echo $this->render('_r7_cells', ['recordPairs' => $model->getOperatingIncomeSubset()]); ?>
     </tbody>
 
     <?php Tools::printEmptyRow(); ?>
-    <?php Tools::printRowMessage('There is no significant actual-to-plan nonoperating cost variances.'); ?>
+    <?php Tools::printRowMessage($model->getNonoperatingCostsInterpretation()); ?>
 
     <tbody style="border: 2px solid var(--bs-secondary);">
         <?php echo $this->render('_r7_cells', ['recordPairs' => $model->getOthersSubset()]); ?>
@@ -153,7 +153,7 @@ function printThresholdRow($value, $message): string {
     </tbody>
 
     <?php Tools::printEmptyRow(); ?>
-    <?php Tools::printRowMessage('The Gross Profit miss of  -$178,205 has put you in a hole that you aren\'t digging out of leading to your Net Income miss of  -$280,635'); ?>
+    <?php Tools::printRowMessage($model->getNetIncomeInterpretation()); ?>
 
     <tbody>
         <?php echo $this->render('_r7_cells', ['recordPairs' => $model->getNetIncomeSubset()]); ?>

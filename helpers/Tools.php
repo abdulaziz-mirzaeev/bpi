@@ -32,4 +32,15 @@ class Tools
         echo "<tr><td colspan='11'><p></p></td></tr>";
         echo "</tbody>";
     }
+
+    /**
+     * @param $number
+     * @param $a
+     * @param $b
+     * @return bool
+     */
+    public static function isBetween($number, $a, $b)
+    {
+        return $number >= $a && $number <= $b;
+    }
 }

@@ -12,7 +12,7 @@ use app\enums\AccountId;
 
     ?>
     <tr>
-        <td class="<?php echo $recordGroup->getAccountClass(); ?>">
+        <td class="<?php echo $recordGroup->getAccountClass(); ?> text-nowrap">
             <?php echo $recordGroup->account->getDisplayLabel(); ?>
         </td>
         <td class="text-end"><?php echo $recordGroup->actual->valueF; ?></td>

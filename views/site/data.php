@@ -14,8 +14,7 @@ $this->title = 'Database'
     <table class="table table-bordered table-hover">
         <thead class="text-center">
         <tr>
-            <th scope="col"></th>
-
+            <th></th>
             <?php foreach ($data as $group): ?>
                 <th scope="col">
                     <?php echo Yii::$app->formatter->asDate($group['date'], 'php:M'); ?>
@@ -37,7 +36,7 @@ $this->title = 'Database'
         </tr>
         <?php foreach ($pl_accounts as $account): ?>
             <tr>
-                <td class="fs-6"><?php echo $account->name; ?></td>
+                <td class="text-nowrap"><?php echo $account->name; ?></td>
                 <?php /** @var \app\models\Record $record */ ?>
                 <?php foreach ($records->where('account_id', $account->id)->all() as $record): ?>
                     <td class="text-end"><?php echo $record->getValueF(); ?></td>
@@ -55,7 +54,7 @@ $this->title = 'Database'
         </tr>
         <?php foreach ($bSh_accounts as $account): ?>
             <tr>
-                <td class="fs-6"><?php echo $account->name; ?></td>
+                <td class="text-nowrap"><?php echo $account->name; ?></td>
                 <?php foreach ($data as $group): ?>
                     <?php $record = $records->first(function ($item, $key) use ($account, $group) {
                         return $item->account_id == $account->id && $item->type == $group['type'] && $item->date == $group['date'];
@@ -67,3 +66,5 @@ $this->title = 'Database'
         </tbody>
     </table>
 </div>
+
+<?php \app\helpers\Tools::pr(\app\models\ActualToPlanScore::getAll()->map(fn($item) => $item->getCriteria()->getFullName() . ' = ' . $item->value)); ?>
