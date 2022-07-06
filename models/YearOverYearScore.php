@@ -7,9 +7,9 @@ namespace app\models;
 use Tightenco\Collect\Support\Collection;
 use yii\base\Model;
 
-class ActualToPlanScore extends Model
+class YearOverYearScore extends ActualToPlanScore
 {
-    private static array $data = [
+    protected static array $data = [
         [
             'criteria_id' => 1,
             'date' => '2022-05',
@@ -23,7 +23,7 @@ class ActualToPlanScore extends Model
         [
             'criteria_id' => 3,
             'date' => '2022-05-01',
-            'value' => 8,
+            'value' => 10,
         ],
         [
             'criteria_id' => 4,
@@ -33,17 +33,17 @@ class ActualToPlanScore extends Model
         [
             'criteria_id' => 5,
             'date' => '2022-05-01',
-            'value' => -8,
+            'value' => -4,
         ],
         [
             'criteria_id' => 6,
             'date' => '2022-05-01',
-            'value' => -10,
+            'value' => -6,
         ],
         [
             'criteria_id' => 7,
             'date' => '2022-05-01',
-            'value' => -10,
+            'value' => -8,
         ],
         [
             'criteria_id' => 8,
@@ -58,12 +58,12 @@ class ActualToPlanScore extends Model
         [
             'criteria_id' => 10,
             'date' => '2022-05-01',
-            'value' => -8,
+            'value' => -10,
         ],
         [
             'criteria_id' => 11,
             'date' => '2022-05-01',
-            'value' => -6,
+            'value' => -10,
         ],
         [
             'criteria_id' => 12,
@@ -83,7 +83,7 @@ class ActualToPlanScore extends Model
         [
             'criteria_id' => 15,
             'date' => '2022-05-01',
-            'value' => -10,
+            'value' => -8,
         ],
         [
             'criteria_id' => 16,
@@ -93,50 +93,17 @@ class ActualToPlanScore extends Model
         [
             'criteria_id' => 17,
             'date' => '2022-05-01',
-            'value' => 2,
+            'value' => -10,
         ],
         [
             'criteria_id' => 18,
             'date' => '2022-05-01',
             'value' => -10,
         ],
-        [
-            'criteria_id' => 19,
-            'date' => '2022-05-01',
-            'value' => -10,
-        ],
-
     ];
-
-    public int $criteria_id;
-    public string $date;
-    public int $value;
-
-    public static function getAll(): Collection
-    {
-        $scores = [];
-        foreach (static::$data as $item) {
-            $score = new static();
-            $score->criteria_id = $item['criteria_id'];
-            $score->date = $item['date'];
-            $score->value = $item['value'];
-
-            $scores[] = $score;
-        }
-
-        return collect($scores);
-    }
-
-    public static function getByDateAndCode(string $date, string $code): self
-    {
-        return static::getAll()->first(function (self $score) use ($date, $code) {
-            return $score->getCriteria()->code == $code &&
-                date('Y-m', strtotime($score->date)) == date('Y-m', strtotime($date));
-        });
-    }
 
     public function getCriteria()
     {
-        return ActualToPlanScoreCriteria::getById($this->criteria_id);
+        return YearOverYearScoreCriteria::getById($this->criteria_id);
     }
 }

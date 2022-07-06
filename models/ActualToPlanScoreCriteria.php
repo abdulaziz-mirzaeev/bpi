@@ -133,7 +133,7 @@ class ActualToPlanScoreCriteria
     public static function getAll(): Collection
     {
         $criteria = [];
-        foreach (self::$data as $item) {
+        foreach (static::$data as $item) {
             $criterion = new static();
             $criterion->id = $item['id'];
             $criterion->code = $item['code'];
@@ -148,15 +148,15 @@ class ActualToPlanScoreCriteria
 
     public static function getByCode(string $code): self
     {
-        return self::getAll()->firstWhere('code', $code);
+        return static::getAll()->firstWhere('code', $code);
     }
 
     public static function getById(int $id): self
     {
-        return self::getAll()->firstWhere('id', $id);
+        return static::getAll()->firstWhere('id', $id);
     }
 
-    public function getFullName()
+    public function getFullName(): string
     {
         return $this->code . ' ' . $this->name . ' ' . $this->description;
     }

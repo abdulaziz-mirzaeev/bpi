@@ -183,6 +183,11 @@ function printThresholdCell($value, $message, $position = 5): string {
     </tbody>
 </table>
 
+<div class="mt-4">
+    <p class="fw-bold fst-italic mb-0"><?php echo $model->getReturnOnSalesAndGPInterpretation(); ?></p>
+    <p><?php echo $model->getNetIncomeAndROSInterpretation(); ?></p>
+</div>
+
 <div class="mt-5">
     <p class="text-muted small fw-light">
         Note 1:  P&L Statement categories highlighted red indicates a significant drop in performance relative to same month last year.

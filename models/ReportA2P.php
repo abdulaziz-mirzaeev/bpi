@@ -6,7 +6,7 @@ namespace app\models;
 
 use app\enums\AccountId;
 use app\enums\AccountStatement;
-use app\enums\ActualToPlanScoreCodes;
+use app\enums\ScoreCodes;
 use app\enums\RecordType;
 use app\helpers\Tools;
 use Yii;
@@ -52,7 +52,7 @@ class ReportA2P extends ReportPL
     public function getNetSalesInterpretation(): string
     {
         $formatter = Yii::$app->formatter;
-        $score = ActualToPlanScore::getByDateAndCode($this->date, ActualToPlanScoreCodes::NET_SALES_SCORE)->value;
+        $score = ActualToPlanScore::getByDateAndCode($this->date, ScoreCodes::NET_SALES_SCORE)->value;
         $dollarDifferenceA2P = '$' .
             $this->getRecordByAccount(AccountId::NET_SALES)->dollarDifferenceA2P();
 
@@ -71,7 +71,7 @@ class ReportA2P extends ReportPL
     public function getCogsInterpretation(): string
     {
         $score = ActualToPlanScore::getByDateAndCode($this->date,
-            ActualToPlanScoreCodes::COGS_ACTUAL_TO_PLAN_PERCENT)->value;
+            ScoreCodes::COGS_ACTUAL_TO_PLAN_PERCENT)->value;
 
         $gpDollarDiff = '$' . $this->getRecordByAccount(AccountId::GROSS_PROFIT)->dollarDifferenceA2P();
         $grossProfit = '$' . $this->getRecordByAccount(AccountId::GROSS_PROFIT)->actual->getValueF();
@@ -90,7 +90,7 @@ class ReportA2P extends ReportPL
     public function getOperatingCostsInterpretation(): string
     {
         $score = ActualToPlanScore::getByDateAndCode($this->date,
-            ActualToPlanScoreCodes::SG_AND_A_ACTUAL_TO_SALES_PERCENT)->value;
+            ScoreCodes::SG_AND_A_ACTUAL_TO_SALES_PERCENT)->value;
 
         $messages = [
             'The purple overhead cost cells indicate where you are significantly better than plan.',
@@ -105,8 +105,8 @@ class ReportA2P extends ReportPL
 
     public function getOperatingIncomeInterpretation(): string
     {
-        $scoreA = ActualToPlanScore::getByDateAndCode($this->date, ActualToPlanScoreCodes::GP_ACTUAL_TO_PLAN_PERCENT);
-        $scoreB = ActualToPlanScore::getByDateAndCode($this->date, ActualToPlanScoreCodes::OI_ACTUAL_TO_PLAN_PERCENT);
+        $scoreA = ActualToPlanScore::getByDateAndCode($this->date, ScoreCodes::GP_ACTUAL_TO_PLAN_PERCENT);
+        $scoreB = ActualToPlanScore::getByDateAndCode($this->date, ScoreCodes::OI_ACTUAL_TO_PLAN_PERCENT);
 
         $score = $scoreA->value + $scoreB->value;
 
@@ -138,7 +138,7 @@ class ReportA2P extends ReportPL
 
     public function getNonoperatingCostsInterpretation()
     {
-        $score = ActualToPlanScore::getByDateAndCode($this->date, ActualToPlanScoreCodes::NONOP_ACTUAL_TO_PLAN_PERCENT)->value;
+        $score = ActualToPlanScore::getByDateAndCode($this->date, ScoreCodes::NONOP_ACTUAL_TO_PLAN_PERCENT)->value;
 
         $messages = [
             "The purple nonoperating cost cells indicate where you are significantly better than plan.",
@@ -153,8 +153,8 @@ class ReportA2P extends ReportPL
 
     public function getNetIncomeInterpretation(): string
     {
-        $scoreA = ActualToPlanScore::getByDateAndCode($this->date, ActualToPlanScoreCodes::NI_ACTUAL_TO_PLAN_PERCENT)->value;
-        $scoreB = ActualToPlanScore::getByDateAndCode($this->date, ActualToPlanScoreCodes::OI_ACTUAL_TO_PLAN_PERCENT)->value;
+        $scoreA = ActualToPlanScore::getByDateAndCode($this->date, ScoreCodes::NI_ACTUAL_TO_PLAN_PERCENT)->value;
+        $scoreB = ActualToPlanScore::getByDateAndCode($this->date, ScoreCodes::OI_ACTUAL_TO_PLAN_PERCENT)->value;
 
         $score = $scoreA + $scoreB;
 
