@@ -62,6 +62,11 @@ class Record extends ActiveRecord
         ];
     }
 
+    public function getDateF()
+    {
+        return Yii::$app->formatter->asDate($this->date, 'php:Y-m');
+    }
+
     public function getAccount()
     {
         return Account::getById($this->account_id);

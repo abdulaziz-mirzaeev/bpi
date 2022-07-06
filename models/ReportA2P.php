@@ -11,7 +11,7 @@ use app\enums\RecordType;
 use app\helpers\Tools;
 use Yii;
 
-class ReportA2P
+class ReportA2P extends ReportPL
 {
     public Dataset $actual;
     public Dataset $plan;
@@ -47,74 +47,6 @@ class ReportA2P
                 );
             })
             ->all();
-    }
-
-    public function getNetSalesSubset()
-    {
-        return $this->getRecordsByAccounts([AccountId::NET_SALES]);
-    }
-
-    public function getDirectCostsSubset()
-    {
-        return $this->getRecordsByAccounts(Account::$directCostsSubset);
-    }
-
-    public function getCOGSsubset()
-    {
-        return $this->getRecordsByAccounts([AccountId::COGS]);
-    }
-
-    public function getGrossProfitSubset()
-    {
-        return $this->getRecordsByAccounts([AccountId::GROSS_PROFIT]);
-    }
-
-    public function getOperatingCostsSubset()
-    {
-        return $this->getRecordsByAccounts(Account::$operatingCostsSubset);
-    }
-
-    public function getTotalSGnAExpenseSubset()
-    {
-        return $this->getRecordsByAccounts([AccountId::TOTAL_SG_AND_A_EXPENSE]);
-    }
-
-    public function getOperatingIncomeSubset()
-    {
-        return $this->getRecordsByAccounts([AccountId::OPERATING_INCOME]);
-    }
-
-    public function getOthersSubset()
-    {
-        return $this->getRecordsByAccounts(Account::$othersSubset);
-    }
-
-    public function getNetNonOperatingCosts()
-    {
-        return $this->getRecordsByAccounts([AccountId::TOTAL_NONOPERATING_EXPENSE_LESS_NONOPERATING_INCOME]);
-    }
-
-    public function getNetIncomeSubset()
-    {
-        return $this->getRecordsByAccounts([AccountId::NET_INCOME]);
-    }
-
-    /**
-     * @param array $accountIds
-     * @return Record[]
-     */
-    public function getRecordsByAccounts(array $accountIds)
-    {
-        return collect($this->getRecords())->filter(function (RecordPairA2P $recordPair) use ($accountIds) {
-            return in_array($recordPair->account->id, $accountIds);
-        })->all();
-    }
-
-    public function getRecordByAccount(int $accountId): RecordPairA2P
-    {
-        return collect($this->getRecords())->filter(function (RecordPairA2P $recordPair) use ($accountId) {
-            return $recordPair->account->id == $accountId;
-        })->first();
     }
 
     public function getNetSalesInterpretation(): string
@@ -247,22 +179,5 @@ class ReportA2P
         ];
 
         return $this->conditionalMessageByScore($score, $messages, $intervals);
-    }
-
-    private function conditionalMessageByScore(int $score, array $messages, array $intervals = [
-        [8, 10],
-        [4, 6],
-        [-2, 2],
-        [-6, -4],
-        [-10, -8],
-    ]): string
-    {
-        foreach ($intervals as $i => [$low, $high]) {
-            if (Tools::isBetween($score, $low, $high)) {
-                return $messages[$i];
-            }
-        }
-
-        return '';
     }
 }

@@ -2,17 +2,11 @@
 /**
  * @var \app\models\RecordPairA2P[] $recordPairs
  */
-
-use app\enums\AccountId;
-
 ?>
 
 <?php foreach ($recordPairs as $recordGroup): ?>
-    <?php
-
-    ?>
     <tr>
-        <td class="<?php echo $recordGroup->getAccountClass(); ?> text-nowrap">
+        <td class="<?php echo $recordGroup->account->getClass(); ?> text-nowrap">
             <?php echo $recordGroup->account->getDisplayLabel(); ?>
         </td>
         <td class="text-end"><?php echo $recordGroup->actual->valueF; ?></td>

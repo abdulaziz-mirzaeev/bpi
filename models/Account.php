@@ -106,4 +106,23 @@ class Account extends Model
     {
         return collect(Data::getAllAccounts())->first(fn(Account $a) => $a->id === $id);
     }
+
+    public function getClass()
+    {
+        $accountClass = '';
+        switch ($this->id) {
+            case AccountId::NET_SALES:
+                $accountClass = 'fw-bold text-info';
+                break;
+            case AccountId::GROSS_PROFIT:
+            case AccountId::OPERATING_INCOME:
+                $accountClass = 'fw-bold text-success';
+                break;
+            case AccountId::NET_INCOME:
+                $accountClass = 'fw-bold text-dark';
+                break;
+        }
+
+        return $accountClass;
+    }
 }

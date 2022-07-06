@@ -8,7 +8,7 @@ use app\enums\AccountId;
 use app\helpers\Tools;
 use Yii;
 
-class RecordPairA2P
+class RecordPairA2P extends RecordPairPL
 {
     public Record $actual;
     public Record $plan;
@@ -28,25 +28,6 @@ class RecordPairA2P
         $this->plan = $plan;
         $this->account = Account::getById($account);
         $this->model = $model;
-    }
-
-    public function getAccountClass()
-    {
-        $accountClass = '';
-        switch ($this->account->id) {
-            case AccountId::NET_SALES:
-                $accountClass = 'fw-bold text-info';
-                break;
-            case AccountId::GROSS_PROFIT:
-            case AccountId::OPERATING_INCOME:
-                $accountClass = 'fw-bold text-success';
-                break;
-            case AccountId::NET_INCOME:
-                $accountClass = 'fw-bold text-dark';
-                break;
-        }
-
-        return $accountClass;
     }
 
     public function percentageA2P($formatting = true)

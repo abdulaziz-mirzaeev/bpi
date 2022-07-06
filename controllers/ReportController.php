@@ -12,6 +12,7 @@ use app\models\Dataset;
 use app\models\Record;
 use app\models\ReportForm;
 use app\models\ReportA2P;
+use app\models\ReportYOY;
 use Codeception\PHPUnit\ResultPrinter\Report;
 use Yii;
 use yii\web\Controller;
@@ -41,6 +42,8 @@ class ReportController extends Controller
 
         if ($selectedReport == ReportForm::REPORT_PT1) {
             return $this->redirect(['a2p-pl-pt', 'date' => $dateActual]);
+        } else if ($selectedReport == ReportForm::REPORT_PT2) {
+            return $this->redirect(['year-over-year-pl', 'date' => $dateActual]);
         }
 
         $datePlanned = $currentYear . '-' . $reportForm['month'];
@@ -114,6 +117,21 @@ class ReportController extends Controller
         try {
             $reportModel = new ReportA2P($date);
             return $this->render('report_a2p', ['model' => $reportModel]);
+        } catch (RecordsNotFoundForDateAndTypeException $e) {
+            Yii::$app->session->addFlash('messages', [
+                'message' => $e->getMessage(),
+                'class' => 'text-white bg-danger',
+            ]);
+            return $this->redirect(['report/index']);
+        }
+
+    }
+
+    public function actionYearOverYearPl($date)
+    {
+        try {
+            $reportModel = new ReportYOY($date);
+            return $this->render('report_yoy', ['model' => $reportModel]);
         } catch (RecordsNotFoundForDateAndTypeException $e) {
             Yii::$app->session->addFlash('messages', [
                 'message' => $e->getMessage(),

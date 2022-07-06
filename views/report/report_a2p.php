@@ -149,7 +149,7 @@ function printThresholdRow($value, $message): string {
             Tools::getParam('company.a2p_p&l.thresholds.dollarDifference.NET_NONOPERATING_COSTS'),
             'Actual nonoperating expenses greater than plan threshold indicating a significant issue.'
         ); ?>
-        <?php echo $this->render('_a2p_cells', ['recordPairs' => $model->getNetNonOperatingCosts()]); ?>
+        <?php echo $this->render('_a2p_cells', ['recordPairs' => $model->getNetNonOperatingCostsSubset()]); ?>
     </tbody>
 
     <?php Tools::printEmptyRow(); ?>

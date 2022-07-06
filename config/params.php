@@ -28,6 +28,21 @@ return [
                 ],
             ],
         ],
+        'yoy_p&l' => [
+            'thresholds' => [
+                'actualChangeInDollars' => [
+                    'NET_SALES' => -200000,
+                    'DIRECT_COSTS' => 100000,
+                    'INDIRECT_COSTS' => 10000,
+                    'NET_NONOPERATING_COSTS' => 10000,
+                ],
+                'salesPercentDifference' => [
+                    'DIRECT_COSTS' => 0.05,
+                    'INDIRECT_COSTS' => 0.01,
+                    'NET_NONOPERATING_COSTS' => 0.01,
+                ]
+            ]
+        ]
     ],
 
     // Krajee Settings
