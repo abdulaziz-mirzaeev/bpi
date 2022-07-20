@@ -5,5 +5,28 @@ services:
     volumes:
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
       - ./:/app:delegated
+      - ./web/.user1.ini:/usr/local/etc/php/conf.d/custom.ini
     ports:
-      - '8000:80'
+      - '9000:80'
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      - MYSQL_DATABASE=bpi
+      - MYSQL_USER=abdulaziz
+      - MYSQL_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - '127.0.0.1:3316:3306'
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - '8888:80'
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=mysql
+    depends_on:
+      - mysql

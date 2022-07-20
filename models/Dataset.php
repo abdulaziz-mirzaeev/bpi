@@ -7,6 +7,7 @@ namespace app\models;
  * @property Record[] $records
  */
 
+use app\enums\AccountId;
 use app\enums\RecordType;
 use app\exceptions\RecordsNotFoundForDateAndTypeException;
 use app\helpers\Data;
@@ -46,5 +47,20 @@ class Dataset
     public function getNetSales(): Record
     {
         return collect($this->records)->firstWhere('account_id', Account::NET_SALES_ID);
+    }
+
+    public function getGrossProfit(): Record
+    {
+        return collect($this->records)->firstWhere('account_id', AccountId::GROSS_PROFIT);
+    }
+
+    public function getOperatingIncome(): Record
+    {
+        return collect($this->records)->firstWhere('account_id', AccountId::OPERATING_INCOME);
+    }
+
+    public function getNetIncome(): Record
+    {
+        return collect($this->records)->firstWhere('account_id', AccountId::NET_INCOME);
     }
 }

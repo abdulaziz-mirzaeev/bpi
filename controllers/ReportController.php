@@ -12,6 +12,7 @@ use app\models\Dataset;
 use app\models\Record;
 use app\models\ReportForm;
 use app\models\ReportA2P;
+use app\models\ReportPL_VR1;
 use app\models\ReportYOY;
 use Codeception\PHPUnit\ResultPrinter\Report;
 use Yii;
@@ -40,10 +41,16 @@ class ReportController extends Controller
 
         $dateActual = $currentYear . '-' . $reportForm['month'];
 
-        if ($selectedReport == ReportForm::REPORT_PT1) {
-            return $this->redirect(['a2p-pl-pt', 'date' => $dateActual]);
-        } else if ($selectedReport == ReportForm::REPORT_PT2) {
-            return $this->redirect(['year-over-year-pl', 'date' => $dateActual]);
+        switch ($selectedReport) {
+            case ReportForm::REPORT_PT1:
+                return $this->redirect(['a2p-pl-pt', 'date' => $dateActual]);
+                break;
+            case ReportForm::REPORT_PT2:
+                return $this->redirect(['year-over-year-pl', 'date' => $dateActual]);
+                break;
+            case ReportForm::REPORT_PL_VR1:
+                return $this->redirect(['pl-vr1', 'date' => $dateActual]);
+                break;
         }
 
         $datePlanned = $currentYear . '-' . $reportForm['month'];
@@ -139,6 +146,20 @@ class ReportController extends Controller
             ]);
             return $this->redirect(['report/index']);
         }
+    }
 
+    public function actionPlVr1($date)
+    {
+        try {
+            $reportModel = new ReportPL_VR1($date);
+            $this->view->registerJsFile('@web/js/pl_vr1.js', ['depends' => [\yii\web\JqueryAsset::class], [\yii\web\View::POS_END]]);
+            return $this->render('report_pl_vr1', ['model' => $reportModel]);
+        } catch (RecordsNotFoundForDateAndTypeException $e) {
+            Yii::$app->session->addFlash('messages', [
+                'message' => $e->getMessage(),
+                'class' => 'text-white bg-danger',
+            ]);
+            return $this->redirect(['report/index']);
+        }
     }
 }

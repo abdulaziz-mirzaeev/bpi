@@ -49,7 +49,7 @@ class Data
             $account->id = $item['id'];
             $account->name = $item['name'];
 
-            if ($item['display_name']) {
+            if (ArrayHelper::keyExists('display_name', $item)) {
                 $account->display_name = $item['display_name'];
             }
 

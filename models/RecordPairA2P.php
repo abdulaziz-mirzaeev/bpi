@@ -13,7 +13,7 @@ class RecordPairA2P extends RecordPairPL
     public Record $actual;
     public Record $plan;
     public Account $account;
-    public ReportA2P $model;
+    public $model;
 
     /**
      * RecordPair constructor.
@@ -30,14 +30,14 @@ class RecordPairA2P extends RecordPairPL
         $this->model = $model;
     }
 
-    public function percentageA2P($formatting = true)
+    public function percentageA2P($formatting = true, $decimals = 0)
     {
         if ($this->plan->value == 0) {
             return "#DIV/0!";
         }
 
         $value = $this->actual->value / $this->plan->value;
-        return $formatting ? Yii::$app->formatter->asPercent($value) : $value;
+        return $formatting ? Yii::$app->formatter->asPercent($value, $decimals) : $value;
     }
 
     public function percentageA2PStyle()
@@ -117,24 +117,24 @@ class RecordPairA2P extends RecordPairPL
         return '';
     }
 
-    public function percentageA2NetSales($formatting = true)
+    public function percentageA2NetSales($formatting = true, $decimals = 0)
     {
         $value = $this->actual->value / $this->model->actual->getNetSales()->value;
-        return $formatting ? Yii::$app->formatter->asPercent($value) : $value;
+        return $formatting ? Yii::$app->formatter->asPercent($value, $decimals) : $value;
     }
 
-    public function percentageP2NetSales($formatting = true)
+    public function percentageP2NetSales($formatting = true, $decimals = 0)
     {
         $value = $this->plan->value / $this->model->plan->getNetSales()->value;
-        return $formatting ? Yii::$app->formatter->asPercent($value) : $value;
+        return $formatting ? Yii::$app->formatter->asPercent($value, $decimals) : $value;
     }
 
-    public function percentNetSalesDifferenceA2P($formatting = true)
+    public function percentNetSalesDifferenceA2P($formatting = true, $decimals = 0)
     {
         $actual = $this->percentageA2NetSales(false);
         $plan = $this->percentageP2NetSales(false);
 
-        return $formatting ? Yii::$app->formatter->asPercent($actual - $plan) : $actual - $plan;
+        return $formatting ? Yii::$app->formatter->asPercent($actual - $plan, $decimals) : $actual - $plan;
     }
 
     public function actualNetSalesEquiv100()
