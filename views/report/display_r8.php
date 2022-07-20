@@ -11,6 +11,7 @@ use app\enums\RecordType;
 use app\helpers\F;
 use app\models\Account;
 use app\models\Record;
+use yii\helpers\Url;
 
 ?>
 
@@ -24,18 +25,8 @@ $previousYearLabel = Yii::$app->formatter->asDate($previousDate, 'php:Y') . ' ' 
 
 ?>
 
-<?php if ($actual->count() == 0 || $previous->count() == 0): ?>
-    <div class="card mt-4">
-        <div class="card-body">
-            <h5 class="text-center">
-                Not enough data to display report
-            </h5>
-        </div>
-    </div>
-
-<?php else: ?>
-
-<h2 class="my-4 display-6">R8 Display</h2>
+<a class="btn btn-primary" href="<?php echo Url::to(Yii::$app->request->referrer); ?>">< Go Back</a>
+<h2 class="my-4 display-6 text-center">R8 Display</h2>
 
 <table class="table table-borderless table-hover">
     <thead class="text-center">
@@ -114,4 +105,75 @@ $previousYearLabel = Yii::$app->formatter->asDate($previousDate, 'php:Y') . ' ' 
     </tbody>
 </table>
 
-<?php endif; ?>
+<?php $this->registerJs(<<<JS
+    $('tr.record').each(function () {
+        let accountType = $(this).data('account-type');
+        let accountId = $(this).data('account-id');
+
+        let redStyle = {backgroundColor: 'var(--bs-danger)', color: '#fff'};
+        let purpleStyle = {backgroundColor: 'var(--bs-purple)', color: '#fff'};
+        let yellowStyle = {backgroundColor: 'var(--bs-warning)', color: '#000'};
+        let greenStyle = {backgroundColor: 'var(--bs-success)', color: '#fff'};
+            
+        let _this = $('td.actual-to-plan', this);
+        let cellValue = $(_this).data('value');
+        
+        switch (accountId) {
+            // NET SALES
+            case 5: 
+                $(this).css({'borderTop': '2px solid var(--bs-info)'})
+                $('td:first-child', this).addClass('text-info fw-bold')
+                break;
+            // Sales Commission
+            case 6:
+                $(this).css({'borderTop': '2px solid var(--bs-warning)'})
+                break;
+            // COGS
+            case 15:
+                $(this).css({'borderBottom': '2px solid var(--bs-warning)'})
+                break;
+            // GROSS PROFIT
+            case 16:
+                $(this).css({'borderBottom': '2px solid var(--bs-orange)'})
+                $('td:first-child', this).addClass('text-success fw-bold')
+                break;
+            case 28:
+                $(this).css({'borderBottom': '2px solid var(--bs-orange)'})
+                break;
+            case 29:
+                $(this).css({'borderBottom': '2px solid var(--bs-secondary)'})
+                $('td:first-child', this).addClass('text-success fw-bold');
+                break;
+            case 37:
+                $(this).css({'borderTop': '2px solid var(--bs-secondary)'})
+                $('td:first-child', this).addClass('text-dark fw-bold')
+                break;
+        }
+        
+        if (accountType === 'expense') {
+            if (cellValue < 0.8 ) {
+                $(_this).css(purpleStyle);        
+            } else if (cellValue >= 0.8 && cellValue < 0.95 ) {
+                $(_this).css(yellowStyle);
+            } else if (cellValue >= 0.95 && cellValue < 1.05) {
+                $(_this).css(greenStyle);
+            } else if (cellValue >= 1.05) {
+                $(_this).css(redStyle);
+            }
+        } 
+        
+        if (accountType === 'income') {
+            if (cellValue < 0.8 ) {
+                $(_this).css(redStyle);        
+            } else if (cellValue >= 0.8 && cellValue < 0.95 ) {
+                $(_this).css(yellowStyle);
+            } else if (cellValue >= 0.95 && cellValue < 1.1) {
+                $(_this).css(greenStyle);
+            } else if (cellValue >= 1.1) {
+                $(_this).css(purpleStyle);
+            }
+        }
+    });
+JS
+
+) ?>
