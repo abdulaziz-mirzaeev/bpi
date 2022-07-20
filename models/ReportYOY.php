@@ -13,9 +13,11 @@ use app\exceptions\RecordsNotFoundForDateAndTypeException;
 class ReportYOY extends ReportPL
 {
     public Dataset $actual;
-    public Dataset $previous;
+    public Dataset $comparable;
     public $date;
     public $datePrevious;
+
+    public $recordPairClass = RecordPairYOY::class;
 
     /**
      * ReportYOY constructor.
@@ -28,27 +30,7 @@ class ReportYOY extends ReportPL
         $this->datePrevious = date('Y-m', strtotime('-1 year', strtotime($this->date)));
 
         $this->actual = new Dataset($this->date, RecordType::ACTUAL);
-        $this->previous = new Dataset($this->datePrevious, RecordType::ACTUAL);
-    }
-
-    public function getRecords()
-    {
-        return collect($this->actual->records)
-            ->merge($this->previous->records)
-            ->filter(function (Record $record) {
-                return $record->account->visible === Account::VISIBLE_TRUE &&
-                    $record->account->statement === AccountStatement::PROFIT_OR_LOSS;
-            })
-            ->groupBy('account_id')
-            ->map(function ($recordGroup, $accountId) {
-                return new RecordPairYOY(
-                    $recordGroup->first(fn(Record $item) => $item->getDateF() === $this->date),
-                    $recordGroup->first(fn(Record $item) => $item->getDateF() === $this->datePrevious),
-                    $accountId,
-                    $this,
-                );
-            })
-            ->all();
+        $this->comparable = new Dataset($this->datePrevious, RecordType::ACTUAL);
     }
 
     public function getReturnOnSalesAndGPInterpretation()

@@ -1,17 +1,8 @@
 <?php
-
-
 namespace app\models;
 
 use app\enums\AccountId;
 use Yii;
-
-/**
- * Class RecordPairPL_VR1
- * @package app\models
- *
- * @property ReportPL_VR1 $model
- */
 
 
 class RecordPairPL_VR1 extends RecordPairA2P

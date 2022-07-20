@@ -23,12 +23,15 @@ use yii\bootstrap5\Html;
 
 <h2 class="text-center">Dybaco Construction</h2>
 <h4 class="text-center fw-light text-uppercase">BPI Scoreboards</h4>
-<p>
-    Highly profitable business owners with sustainable cash reserves set aside time each month to review their business results.
-    They know that their profit plan is their best measurement for success.
-    They use it as a basis for comparison to help them confirm what's working well in their business
-    and what they need to fix to make more money.
-</p>
+<div class="row justify-content-center">
+    <p class="col-lg-8">
+        Highly profitable business owners with sustainable cash reserves set aside time each month to review their
+        business results.
+        They know that their profit plan is their best measurement for success.
+        They use it as a basis for comparison to help them confirm what's working well in their business
+        and what they need to fix to make more money.
+    </p>
+</div>
 
 <?php
 $form = ActiveForm::begin(['method' => 'get']); ?>
@@ -51,17 +54,22 @@ $months = [
 ];
 ?>
 
-<h4 class="fw-normal">
-    Please select month
-</h4>
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <?php echo $form->field($model, 'month')->dropDownList($months)->hint('Please select month'); ?>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <?php echo $form
+            ->field($model, 'reportId')
+            ->dropDownList(ReportForm::$reportNames, ['prompt' => 'Select report...']);
+        ?>
+    </div>
+</div>
 
-<?php echo $form->field($model, 'month')->dropDownList($months); ?>
-
-<?php echo $form
-    ->field($model, 'reportId')
-    ->dropDownList(ReportForm::$reportNames, ['prompt' => 'Select report...']);
-?>
-
-<?php echo Html::submitButton('Find', ['class' => 'btn btn-success']); ?>
+<div class="d-grid gap-2 col-6 mx-auto">
+    <?php echo Html::submitButton('Find', ['class' => 'btn btn-success px-5 float-end']); ?>
+</div>
 
 <?php ActiveForm::end(); ?>

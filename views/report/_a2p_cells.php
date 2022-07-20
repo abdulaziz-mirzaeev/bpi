@@ -10,7 +10,7 @@
             <?php echo $recordGroup->account->getDisplayLabel(); ?>
         </td>
         <td class="text-end"><?php echo $recordGroup->actual->valueF; ?></td>
-        <td class="text-end"><?php echo $recordGroup->plan->valueF; ?></td>
+        <td class="text-end"><?php echo $recordGroup->comparable->valueF; ?></td>
         <td class="text-center" style="<?php echo $recordGroup->percentageA2PStyle(); ?>">
             <?php echo $recordGroup->percentageA2P(); ?>
         </td>

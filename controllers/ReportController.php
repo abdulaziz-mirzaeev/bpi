@@ -13,6 +13,7 @@ use app\models\Record;
 use app\models\ReportForm;
 use app\models\ReportA2P;
 use app\models\ReportPL_VR1;
+use app\models\ReportPL_VR2;
 use app\models\ReportYOY;
 use Codeception\PHPUnit\ResultPrinter\Report;
 use Yii;
@@ -52,6 +53,9 @@ class ReportController extends Controller
                 break;
             case ReportForm::REPORT_PL_VR1:
                 return $this->redirect(['pl-vr1', 'date' => $dateActual]);
+                break;
+            case ReportForm::REPORT_PL_VR2:
+                return $this->redirect(['pl-vr2', 'date' => $dateActual]);
                 break;
             case ReportForm::REPORT_R7:
                 return $this->redirect(['r7', 'dateActual' => $dateActual, 'datePlanned' => $datePlanned]);
@@ -102,8 +106,30 @@ class ReportController extends Controller
     {
         try {
             $reportModel = new ReportPL_VR1($date);
-            $this->view->registerJsFile('@web/js/pl_vr1.js', ['depends' => [\yii\web\JqueryAsset::class], [\yii\web\View::POS_END]]);
+            $this->view->registerJsFile(
+                '@web/js/pl_vr1.js',
+                ['depends' => [\yii\web\JqueryAsset::class], [\yii\web\View::POS_END]]
+            );
             return $this->render('report_pl_vr1', ['model' => $reportModel]);
+        } catch (RecordsNotFoundForDateAndTypeException $e) {
+            Yii::$app->session->addFlash('messages', [
+                'message' => $e->getMessage(),
+                'class' => 'text-white bg-danger',
+            ]);
+            return $this->redirect(['report/index']);
+        }
+    }
+
+    public function actionPlVr2($date)
+    {
+        try {
+            $reportModel = new ReportPL_VR2($date);
+            $this->view->registerJsFile(
+                '@web/js/pl_vr1.js',
+                ['depends' => [\yii\web\JqueryAsset::class], [\yii\web\View::POS_END]]
+            );
+            Tools::pr($reportModel->recordPairClass);
+//            return $this->render('report_pl_vr2', ['model' => $reportModel]);
         } catch (RecordsNotFoundForDateAndTypeException $e) {
             Yii::$app->session->addFlash('messages', [
                 'message' => $e->getMessage(),

@@ -14,7 +14,7 @@ use yii\bootstrap5\Html;
         <td class="<?php echo $recordGroup->account->getClass(); ?>text-nowrap">
             <?php echo $recordGroup->account->name; ?>
         </td>
-        <td class="text-end"><?php echo $recordGroup->plan->valueF; ?></td>
+        <td class="text-end"><?php echo $recordGroup->comparable->valueF; ?></td>
         <td class="text-end"><?php echo $recordGroup->actual->valueF; ?></td>
         <td class="text-end"><?php echo $recordGroup->percentageP2NetSales(true, 1); ?></td>
 

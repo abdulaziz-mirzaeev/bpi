@@ -6,6 +6,7 @@
 
 use app\enums\RecordType;
 use app\helpers\Tools;
+use yii\helpers\Url;
 
 $formatter = Yii::$app->formatter;
 $date = $formatter->asDate($model->date, 'php:Y');
@@ -31,6 +32,7 @@ function printMessageRow($message, $submessage) {
 }
 ?>
 
+<a class="btn btn-primary" href="<?php echo Url::to(Yii::$app->request->referrer); ?>">< Go Back</a>
 
 <h4 class="text-center mb-4">
     <?php

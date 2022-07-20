@@ -13,40 +13,14 @@ use Yii;
 
 class ReportA2P extends ReportPL
 {
-    public Dataset $actual;
-    public Dataset $plan;
-    public $date;
+    public $recordPairClass = RecordPairA2P::class;
 
     public function __construct($date)
     {
         $this->date = date('Y-m', strtotime($date));
 
         $this->actual = new Dataset($this->date, RecordType::ACTUAL);
-        $this->plan = new Dataset($this->date, RecordType::PLAN);
-    }
-
-
-    /**
-     * @return RecordPairA2P[]
-     */
-    public function getRecords()
-    {
-        return collect($this->actual->records)
-            ->merge($this->plan->records)
-            ->filter(function (Record $record) {
-                return $record->account->visible === Account::VISIBLE_TRUE &&
-                    $record->account->statement === AccountStatement::PROFIT_OR_LOSS;
-            })
-            ->groupBy('account_id')
-            ->map(function ($recordGroup, $key) {
-                return new RecordPairA2P(
-                    $recordGroup->first(fn(Record $item) => $item->type === RecordType::ACTUAL),
-                    $recordGroup->first(fn(Record $item) => $item->type === RecordType::PLAN),
-                    $key,
-                    $this
-                );
-            })
-            ->all();
+        $this->comparable = new Dataset($this->date, RecordType::PLAN);
     }
 
     public function getNetSalesInterpretation(): string

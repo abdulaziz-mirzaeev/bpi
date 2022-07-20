@@ -12,31 +12,10 @@ use Yii;
 
 class ReportPL_VR1 extends ReportA2P
 {
+    public $recordPairClass = RecordPairPL_VR1::class;
+
     public float $lowOfPlan = 0.95;
     public float $highOfPlan = 1.05;
-
-    /**
-     * @return RecordPairPL_VR1[]
-     */
-    public function getRecords()
-    {
-        return collect($this->actual->records)
-            ->merge($this->plan->records)
-            ->filter(function (Record $record) {
-                return $record->account->visible === Account::VISIBLE_TRUE &&
-                    $record->account->statement === AccountStatement::PROFIT_OR_LOSS;
-            })
-            ->groupBy('account_id')
-            ->map(function ($recordGroup, $key) {
-                return new RecordPairPL_VR1(
-                    $recordGroup->first(fn(Record $item) => $item->type === RecordType::ACTUAL),
-                    $recordGroup->first(fn(Record $item) => $item->type === RecordType::PLAN),
-                    $key,
-                    $this
-                );
-            })
-            ->all();
-    }
 
     public function getDirectCostCogsSubset()
     {
@@ -60,7 +39,7 @@ class ReportPL_VR1 extends ReportA2P
 
     public function getPlanGrossMarginPercentage($formatting = true, $decimals = 0)
     {
-        $value = $this->plan->getGrossProfit()->value / $this->plan->getNetSales()->value;
+        $value = $this->comparable->getGrossProfit()->value / $this->comparable->getNetSales()->value;
         return $formatting ? Yii::$app->formatter->asPercent($value) : $value;
     }
 
@@ -72,7 +51,7 @@ class ReportPL_VR1 extends ReportA2P
 
     public function getPlanOperatingIncomePercentage($formatting = true, $decimals = 0)
     {
-        $value = $this->plan->getOperatingIncome()->value / $this->plan->getNetSales()->value;
+        $value = $this->comparable->getOperatingIncome()->value / $this->comparable->getNetSales()->value;
         return $formatting ? Yii::$app->formatter->asPercent($value) : $value;
     }
 
@@ -84,7 +63,7 @@ class ReportPL_VR1 extends ReportA2P
 
     public function getPlanReturnOnSales($formatting = true, $decimals = 0)
     {
-        $value = $this->plan->getNetIncome()->value / $this->plan->getNetSales()->value;
+        $value = $this->comparable->getNetIncome()->value / $this->comparable->getNetSales()->value;
         return $formatting ? Yii::$app->formatter->asPercent($value) : $value;
     }
 

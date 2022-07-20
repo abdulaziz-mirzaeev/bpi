@@ -5,10 +5,45 @@ namespace app\models;
 
 
 use app\enums\AccountId;
+use app\enums\AccountStatement;
+use app\enums\RecordType;
 use app\helpers\Tools;
+use yii\base\InvalidConfigException;
 
 abstract class ReportPL
 {
+    public Dataset $actual;
+    public Dataset $comparable;
+    public $date;
+
+    public $recordPairClass;
+
+    public function init()
+    {
+        if ($this->recordPairClass === null) {
+            throw new InvalidConfigException('The "recordPairClass" property must be set.');
+        }
+    }
+
+    public function getRecords()
+    {
+        return collect($this->actual->records)
+            ->merge($this->comparable->records)
+            ->filter(function (Record $record) {
+                return $record->account->visible === Account::VISIBLE_TRUE &&
+                    $record->account->statement === AccountStatement::PROFIT_OR_LOSS;
+            })
+            ->groupBy('account_id')
+            ->map(function ($recordGroup, $key) {
+                return new $this->recordPairClass(
+                    $recordGroup->first(fn(Record $item) => $item->type === RecordType::ACTUAL),
+                    $recordGroup->first(fn(Record $item) => $item->type === RecordType::PLAN),
+                    $key,
+                    $this
+                );
+            })
+            ->all();
+    }
 
     public function getRecordsByAccounts(array $accountIds)
     {

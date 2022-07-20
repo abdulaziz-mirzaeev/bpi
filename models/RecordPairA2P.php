@@ -10,33 +10,13 @@ use Yii;
 
 class RecordPairA2P extends RecordPairPL
 {
-    public Record $actual;
-    public Record $plan;
-    public Account $account;
-    public $model;
-
-    /**
-     * RecordPair constructor.
-     * @param Record $actual
-     * @param Record $plan
-     * @param int $account
-     * @param ReportA2P $model
-     */
-    public function __construct(Record $actual, Record $plan, int $account, $model)
-    {
-        $this->actual = $actual;
-        $this->plan = $plan;
-        $this->account = Account::getById($account);
-        $this->model = $model;
-    }
-
     public function percentageA2P($formatting = true, $decimals = 0)
     {
-        if ($this->plan->value == 0) {
+        if ($this->comparable->value == 0) {
             return "#DIV/0!";
         }
 
-        $value = $this->actual->value / $this->plan->value;
+        $value = $this->actual->value / $this->comparable->value;
         return $formatting ? Yii::$app->formatter->asPercent($value, $decimals) : $value;
     }
 
@@ -80,7 +60,7 @@ class RecordPairA2P extends RecordPairPL
 
     public function dollarDifferenceA2P($formatting = true)
     {
-        $value = $this->actual->value - $this->plan->value;
+        $value = $this->actual->value - $this->comparable->value;
         return $formatting ? Yii::$app->formatter->asDecimal($value, 0) : $value;
     }
 
@@ -125,7 +105,7 @@ class RecordPairA2P extends RecordPairPL
 
     public function percentageP2NetSales($formatting = true, $decimals = 0)
     {
-        $value = $this->plan->value / $this->model->plan->getNetSales()->value;
+        $value = $this->comparable->value / $this->model->comparable->getNetSales()->value;
         return $formatting ? Yii::$app->formatter->asPercent($value, $decimals) : $value;
     }
 

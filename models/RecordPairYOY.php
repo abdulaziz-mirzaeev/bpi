@@ -10,26 +10,6 @@ use Yii;
 
 class RecordPairYOY extends RecordPairPL
 {
-    public Record $actual;
-    public Record $previous;
-    public Account $account;
-    public ReportYOY $model;
-
-    /**
-     * RecordPairYOY constructor.
-     * @param Record $actual
-     * @param Record $previous
-     * @param int $account
-     * @param ReportYOY $model
-     */
-    public function __construct(Record $actual, Record $previous, int $account, ReportYOY $model)
-    {
-        $this->actual = $actual;
-        $this->previous = $previous;
-        $this->account = Account::getById($account);
-        $this->model = $model;
-    }
-
     public function percentageActualToSales($formatting = true)
     {
         $value = $this->actual->value / $this->model->actual->getNetSales()->value;
@@ -38,7 +18,7 @@ class RecordPairYOY extends RecordPairPL
 
     public function percentagePreviousToSales($formatting = true)
     {
-        $value = $this->previous->value / $this->model->previous->getNetSales()->value;
+        $value = $this->comparable->value / $this->model->comparable->getNetSales()->value;
         return $formatting ? Yii::$app->formatter->asPercent($value) : $value;
     }
 
@@ -80,7 +60,7 @@ class RecordPairYOY extends RecordPairPL
     public function actualChangeInDollars($formatting = true)
     {
         $actual = $this->actual->value;
-        $previous = $this->previous->value;
+        $previous = $this->comparable->value;
 
         return $formatting ? Yii::$app->formatter->asDecimal($actual - $previous, 0) : $actual - $previous;
     }
@@ -118,11 +98,11 @@ class RecordPairYOY extends RecordPairPL
 
     public function actualChangeInPercent($formatting = true)
     {
-        if ($this->previous->value == 0) {
+        if ($this->comparable->value == 0) {
             return "#DIV/0!";
         }
 
-        $value = $this->actualChangeInDollars(false) / $this->previous->value;
+        $value = $this->actualChangeInDollars(false) / $this->comparable->value;
         return $formatting ? Yii::$app->formatter->asPercent($value) : $value;
     }
 
