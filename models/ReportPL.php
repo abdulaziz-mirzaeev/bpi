@@ -17,6 +17,7 @@ abstract class ReportPL
     public $date;
 
     public $recordPairClass;
+    public $comparableType;
 
     public function init()
     {
@@ -37,7 +38,7 @@ abstract class ReportPL
             ->map(function ($recordGroup, $key) {
                 return new $this->recordPairClass(
                     $recordGroup->first(fn(Record $item) => $item->type === RecordType::ACTUAL),
-                    $recordGroup->first(fn(Record $item) => $item->type === RecordType::PLAN),
+                    $recordGroup->first(fn(Record $item) => $item->type === $this->comparableType),
                     $key,
                     $this
                 );
@@ -54,7 +55,7 @@ abstract class ReportPL
 
     /**
      * @param int $accountId
-     * @return RecordPairA2P|RecordPairYOY
+     * @return RecordPairA2P|RecordPairYOY|RecordPairPL_VR2|RecordPairPL_VR1
      */
     public function getRecordByAccount(int $accountId)
     {
@@ -111,6 +112,16 @@ abstract class ReportPL
     public function getNetIncomeSubset()
     {
         return $this->getRecordsByAccounts([AccountId::NET_INCOME]);
+    }
+
+    public function getDirectCostCogsSubset()
+    {
+        return [...$this->getDirectCostsSubset(), ...$this->getCOGSsubset()];
+    }
+
+    public function getOperatingCostsAndSGA()
+    {
+        return [...$this->getOperatingCostsSubset(), ...$this->getTotalSGnAExpenseSubset()];
     }
 
     protected function conditionalMessageByScore(int $score, array $messages, array $intervals = [

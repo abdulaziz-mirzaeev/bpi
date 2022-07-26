@@ -14,6 +14,8 @@ use Yii;
 class ReportA2P extends ReportPL
 {
     public $recordPairClass = RecordPairA2P::class;
+    public $comparableType = RecordType::PLAN;
+
 
     public function __construct($date)
     {

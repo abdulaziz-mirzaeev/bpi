@@ -10,16 +10,16 @@ use Yii;
 
 class RecordPairYOY extends RecordPairPL
 {
-    public function percentageActualToSales($formatting = true)
+    public function percentageActualToSales($formatting = true, $decimals = 0)
     {
         $value = $this->actual->value / $this->model->actual->getNetSales()->value;
-        return $formatting ? Yii::$app->formatter->asPercent($value) : $value;
+        return $formatting ? Yii::$app->formatter->asPercent($value, $decimals) : $value;
     }
 
-    public function percentagePreviousToSales($formatting = true)
+    public function percentagePreviousToSales($formatting = true, $decimals = 0)
     {
         $value = $this->comparable->value / $this->model->comparable->getNetSales()->value;
-        return $formatting ? Yii::$app->formatter->asPercent($value) : $value;
+        return $formatting ? Yii::$app->formatter->asPercent($value, $decimals) : $value;
     }
 
     public function salesPercentageDifferenceOfCurrentAndPrevious($formatting = true)
@@ -96,14 +96,14 @@ class RecordPairYOY extends RecordPairPL
         return '';
     }
 
-    public function actualChangeInPercent($formatting = true)
+    public function actualChangeInPercent($formatting = true, $decimals = 0)
     {
         if ($this->comparable->value == 0) {
             return "#DIV/0!";
         }
 
         $value = $this->actualChangeInDollars(false) / $this->comparable->value;
-        return $formatting ? Yii::$app->formatter->asPercent($value) : $value;
+        return $formatting ? Yii::$app->formatter->asPercent($value, $decimals) : $value;
     }
 
     public function actualToSalesEquiv100()

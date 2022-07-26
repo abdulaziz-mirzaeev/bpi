@@ -9,16 +9,16 @@ abstract class RecordPairPL
     public Record $actual;
     public Record $comparable;
     public Account $account;
-    public ReportPL $model;
+    public $model;
 
     /**
      * RecordPair constructor.
      * @param Record $actual
      * @param Record $plan
      * @param int $account
-     * @param ReportPL $model
+     * @param $model
      */
-    public function __construct(Record $actual, Record $plan, int $account, ReportPL $model)
+    public function __construct(Record $actual, Record $plan, int $account, $model)
     {
         $this->actual = $actual;
         $this->comparable = $plan;

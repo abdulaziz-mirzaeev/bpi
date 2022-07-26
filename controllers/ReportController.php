@@ -125,11 +125,10 @@ class ReportController extends Controller
         try {
             $reportModel = new ReportPL_VR2($date);
             $this->view->registerJsFile(
-                '@web/js/pl_vr1.js',
+                '@web/js/pl_vr2.js',
                 ['depends' => [\yii\web\JqueryAsset::class], [\yii\web\View::POS_END]]
             );
-            Tools::pr($reportModel->recordPairClass);
-//            return $this->render('report_pl_vr2', ['model' => $reportModel]);
+            return $this->render('report_pl_vr2', ['model' => $reportModel]);
         } catch (RecordsNotFoundForDateAndTypeException $e) {
             Yii::$app->session->addFlash('messages', [
                 'message' => $e->getMessage(),

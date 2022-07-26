@@ -18,6 +18,7 @@ class ReportYOY extends ReportPL
     public $datePrevious;
 
     public $recordPairClass = RecordPairYOY::class;
+    public $comparableType = RecordType::ACTUAL;
 
     /**
      * ReportYOY constructor.
@@ -31,6 +32,26 @@ class ReportYOY extends ReportPL
 
         $this->actual = new Dataset($this->date, RecordType::ACTUAL);
         $this->comparable = new Dataset($this->datePrevious, RecordType::ACTUAL);
+    }
+
+    public function getRecords()
+    {
+        return collect($this->actual->records)
+            ->merge($this->comparable->records)
+            ->filter(function (Record $record) {
+                return $record->account->visible === Account::VISIBLE_TRUE &&
+                    $record->account->statement === AccountStatement::PROFIT_OR_LOSS;
+            })
+            ->groupBy('account_id')
+            ->map(function ($recordGroup, $accountId) {
+                return new $this->recordPairClass(
+                    $recordGroup->first(fn(Record $item) => $item->getDateF() === $this->date),
+                    $recordGroup->first(fn(Record $item) => $item->getDateF() === $this->datePrevious),
+                    $accountId,
+                    $this,
+                );
+            })
+            ->all();
     }
 
     public function getReturnOnSalesAndGPInterpretation()
